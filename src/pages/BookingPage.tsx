@@ -148,23 +148,26 @@ export default function BookingPage() {
 
           <div style={{ background: 'var(--bg)', padding: '2rem', border: '3px solid var(--border)', marginBottom: '2rem', textAlign: 'left' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>
-              <span style={{ fontWeight: 'bold' }}>예매 번호</span>
-              <span style={{ color: 'var(--purple)', fontWeight: '900', fontSize: '1.2rem' }}>{successData.booking_code}</span>
+              <span style={{ fontWeight: '600' }}>예매 번호</span>
+              <span style={{ color: 'var(--purple)', fontWeight: '700', fontSize: '1.2rem' }}>{successData.booking_code}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span>성함</span>
-              <span style={{ fontWeight: 'bold' }}>{successData.name}</span>
+              <span style={{ fontWeight: '600' }}>{successData.name}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span>연락처</span>
-              <span style={{ fontWeight: 'bold' }}>{formatPhone(successData.phone)}</span>
+              <span style={{ fontWeight: '600' }}>{formatPhone(successData.phone)}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+              <span>공연 일정</span>
+              <span style={{ fontWeight: '600', textAlign: 'right' }}>
+                {events.find(e => e.id === successData.event_id)?.date} {events.find(e => e.id === successData.event_id)?.time}
+              </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>공연 일정</span>
-              <span style={{ fontWeight: 'bold', textAlign: 'right' }}>
-                {events.find(e => e.id === successData.event_id)?.date}<br />
-                {events.find(e => e.id === successData.event_id)?.time}
-              </span>
+              <span>장소</span>
+              <span style={{ fontWeight: '600', textAlign: 'right' }}>서울예술대학교 중앙광장, 빨간대문</span>
             </div>
           </div>
 
@@ -220,15 +223,15 @@ export default function BookingPage() {
                         justifyContent: 'center'
                       }}
                     >
-                      <div style={{ fontWeight: '900', fontSize: '1.4rem', lineHeight: '1.2' }}>{ev.date}<br />{ev.time}</div>
-                      <div style={{ fontSize: '1rem', opacity: 0.9 }}>{ev.location}</div>
+                      <div style={{ fontWeight: '700', fontSize: '1.4rem', lineHeight: '1.2' }}>{ev.date}<br />{ev.time}</div>
+                      <div style={{ fontSize: '1rem', opacity: 0.9 }}>{ev.location.includes('빨간대문') ? ev.location : `${ev.location}, 빨간대문`}</div>
                       <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.75rem',
                         fontSize: '0.9rem',
                         marginTop: '0.5rem',
-                        fontWeight: '900',
+                        fontWeight: '700',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em'
                       }}>
@@ -324,7 +327,7 @@ export default function BookingPage() {
                             top: '50%', 
                             transform: 'translateY(-50%)',
                             color: 'var(--error)',
-                            fontWeight: 'bold',
+                            fontWeight: '600',
                             fontSize: '0.9rem'
                           }}>
                             {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
@@ -359,18 +362,18 @@ export default function BookingPage() {
                 <div style={{ fontSize: '1.1rem', lineHeight: '2' }}>
                   <div style={{ marginBottom: '1.5rem' }}>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.25rem' }}>공연</div>
-                    <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{events.find(e => e.id.toString() === formData.event_id)?.title}</div>
+                    <div style={{ fontWeight: '600', fontSize: '1.2rem' }}>{events.find(e => e.id.toString() === formData.event_id)?.title}</div>
                   </div>
                   <div style={{ marginBottom: '1.5rem' }}>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.25rem' }}>일정</div>
-                    <div style={{ fontWeight: 'bold' }}>
+                    <div style={{ fontWeight: '600' }}>
                       {events.find(e => e.id.toString() === formData.event_id)?.date}<br />
                       {events.find(e => e.id.toString() === formData.event_id)?.time}
                     </div>
                   </div>
                   <div style={{ borderTop: '2px solid var(--border)', marginTop: '2rem', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 'bold' }}>티켓 가격</span>
-                    <span style={{ fontWeight: '900', color: 'var(--purple)', fontSize: '1.6rem' }}>FREE</span>
+                    <span style={{ fontWeight: '600' }}>티켓 가격</span>
+                    <span style={{ fontWeight: '700', color: 'var(--purple)', fontSize: '1.6rem' }}>FREE</span>
                   </div>
                 </div>
                 <button

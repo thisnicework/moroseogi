@@ -16,16 +16,26 @@ export default function HomePage() {
         {/* 공연 정보 영역 */}
         <div className="bento-card bento-item-info" style={{ padding: '2rem' }}>
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '2px solid var(--purple-light)', paddingBottom: '0.5rem' }}>공연 정보</h2>
-          <div style={{ fontSize: '1.05rem', fontWeight: '700', lineHeight: '1.8' }}>
-            <div style={{ display: 'flex', marginBottom: '0.5rem' }}>
-              <span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px', flexShrink: 0 }}>일시</span>
+          <div style={{ fontSize: '1.05rem', lineHeight: '1.8', color: 'var(--text)' }}>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.2rem' }}>
+              <span style={{ fontWeight: '600', minWidth: '70px' }}>공연명</span> | <span>모로서기</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start', marginBottom: '0.2rem' }}>
+              <span style={{ fontWeight: '600', minWidth: '70px' }}>일시</span> |
               <div>
-                2026.05.16.(SAT) - 05.17.(SUN) 18:30
+                <div>2026.05.16.(SAT) 18:30</div>
+                <div style={{ paddingLeft: '2.1rem' }}>- 05.17.(SUN) 18:30</div>
               </div>
             </div>
-            <div style={{ display: 'flex', marginBottom: '0.5rem' }}><span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px' }}>장소</span> <div>서울예술대학교 중앙광장, 빨간대문</div></div>
-            <div style={{ display: 'flex', marginBottom: '0.5rem' }}><span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px' }}>러닝타임</span> <div>75분</div></div>
-            <div style={{ display: 'flex' }}><span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px' }}>지도교수</span> <div>장혜진 P</div></div>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.2rem' }}>
+              <span style={{ fontWeight: '600', minWidth: '70px' }}>장소</span> | <span>서울예술대학교 중앙광장, 빨간대문</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.2rem' }}>
+              <span style={{ fontWeight: '600', minWidth: '70px' }}>러닝타임</span> | <span>75분</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <span style={{ fontWeight: '600', minWidth: '70px' }}>지도교수</span> | <span>장혜진 P</span>
+            </div>
           </div>
         </div>
 
@@ -42,22 +52,22 @@ export default function HomePage() {
         {/* 개별 메뉴 카드들 */}
         <Link to="/intro" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
           <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>공연 소개</h3>
-          <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
+          <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
         </Link>
 
         <Link to="/points" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
           <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>작품 소개</h3>
-          <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>작품 목록 보기 &rarr;</span>
+          <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--purple)' }}>작품 목록 보기 &rarr;</span>
         </Link>
 
         <Link to="/notice" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
           <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>공지사항</h3>
-          <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>내용 확인하기 &rarr;</span>
+          <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--purple)' }}>내용 확인하기 &rarr;</span>
         </Link>
 
         <Link to="/credit" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
           <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>CREDIT</h3>
-          <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
+          <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
         </Link>
 
       </div>

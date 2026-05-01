@@ -89,30 +89,30 @@ export default function CreditPage() {
             
             <div className="grid-2" style={{ gap: '1.5rem 2rem' }}>
               <div>
-                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>공연창작학부 책임교수</h4>
+                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>공연창작학부 책임교수</h4>
                 <p>김승미</p>
               </div>
               <div>
-                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>미디어창작학부 책임교수</h4>
+                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>미디어창작학부 책임교수</h4>
                 <p>임준빈</p>
               </div>
             </div>
 
             <div className="grid-2" style={{ gap: '1.5rem 2rem' }}>
               <div>
-                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem' }}>연극 책임교수</h4>
+                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>연극 책임교수</h4>
                 <p>조경향</p>
               </div>
               <div>
-                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem' }}>무용 책임교수</h4>
+                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>무용 책임교수</h4>
                 <p>이우재</p>
               </div>
               <div>
-                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem' }}>연기 책임교수</h4>
+                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>연기 책임교수</h4>
                 <p>최정선</p>
               </div>
               <div>
-                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem' }}>예술경영 책임교수</h4>
+                <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>예술경영 책임교수</h4>
                 <p>남승헌</p>
               </div>
             </div>
@@ -137,22 +137,21 @@ export default function CreditPage() {
             </div>
 
             <div style={{ marginTop: '1rem' }}>
-              <h4 className="mb-4" style={{ color: 'var(--purple)', fontWeight: 'bold' }}>&lt;창작실습지원센터&gt;</h4>
+              <h4 className="mb-4" style={{ color: 'var(--purple)', fontWeight: '600', fontSize: '1rem' }}>&lt;창작실습지원센터&gt;</h4>
               <div className="grid-2" style={{ gap: '1.5rem 2rem' }}>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>창작실습지원센터 센터장</h4><p>하창용</p></div>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>창작실습팀장</h4><p>이상규</p></div>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>컴퓨터랩</h4><p>황용회</p></div>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>무대공방</h4><p>이강원, 이보한</p></div>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>조명</h4><p>윤정주</p></div>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>영상</h4><p>이승훈, 이지훈</p></div>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>음향</h4><p>김경훈, 이경민</p></div>
-                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>혁신지원사업</h4><p>김누리, 이지훈</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>창작실습지원센터 센터장</h4><p>하창용</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>창작실습팀장</h4><p>이상규</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>컴퓨터랩</h4><p>황용회</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>무대공방</h4><p>이강원, 이보한</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>조명</h4><p>윤정주</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>영상</h4><p>이승훈, 이지훈</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>음향</h4><p>김경훈, 이경민</p></div>
+                <div><h4 style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>혁신지원사업</h4><p>김누리, 이지훈</p></div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </main>
-  )
+  );
 }

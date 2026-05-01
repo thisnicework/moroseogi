@@ -181,7 +181,7 @@ export default function LookupPage() {
                         top: '50%', 
                         transform: 'translateY(-50%)',
                         color: 'var(--error)',
-                        fontWeight: 'bold',
+                        fontWeight: '600',
                         fontSize: '1rem'
                       }}>
                         {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
@@ -259,7 +259,7 @@ export default function LookupPage() {
                       padding: '0.25rem 3rem', 
                       transform: 'rotate(45deg)',
                       fontSize: '0.8rem',
-                      fontWeight: 'bold'
+                      fontWeight: '600'
                     }}>CANCELLED</div>
                   )}
                   
@@ -268,14 +268,16 @@ export default function LookupPage() {
                       <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: b.status === 'cancelled' ? 'var(--text-muted)' : 'var(--purple-dark)' }}>
                         {b.events?.title}
                       </h3>
-                      <p style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.5rem' }}>
+                      <p style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '0.5rem' }}>
                         {b.events?.date} {b.events?.time}
                       </p>
-                      <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>{b.events?.location}</p>
+                      <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                        {b.events?.location && (b.events.location.includes('빨간대문') ? b.events.location : `${b.events.location}, 빨간대문`)}
+                      </p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>예매 코드</p>
-                      <p style={{ fontSize: '1.2rem', fontWeight: '900', color: 'var(--purple)' }}>{b.booking_code}</p>
+                      <p style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--purple)' }}>{b.booking_code}</p>
                     </div>
                   </div>
 

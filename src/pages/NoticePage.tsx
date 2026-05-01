@@ -39,7 +39,7 @@ export default function NoticePage() {
               animation: 'slideIn 0.3s ease-out'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <h3 style={{ fontSize: '1.2rem', color: 'var(--purple-dark)', margin: 0 }}>{notice.title}</h3>
+                <h3 style={{ fontSize: '1.1rem', color: 'var(--purple-dark)', margin: 0 }}>{notice.title}</h3>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{notice.date}</span>
               </div>
               <p style={{ fontSize: '1rem', lineHeight: '1.6', color: 'var(--text)', wordBreak: 'keep-all' }}>
