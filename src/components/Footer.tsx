@@ -4,32 +4,23 @@ export default function Footer() {
     <footer className="footer" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
       <h2 style={{ marginBottom: '1.5rem', fontSize: '2rem', letterSpacing: '-0.05em' }}>모로서기</h2>
       <div style={{ marginBottom: '2rem' }}>
-        <a
-          href="https://www.instagram.com/seoularts.moroseogi/"
-          target="_blank"
+        <a 
+          href="https://www.instagram.com/seoularts.moroseogi/" 
+          target="_blank" 
           rel="noopener noreferrer"
-          style={{
+          style={{ 
             display: 'inline-block',
-            opacity: 1,
-            transition: 'all 0.2s ease',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'scale(1.05)';
-            e.currentTarget.style.filter = 'brightness(1.2)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.filter = 'none';
+            cursor: 'pointer'
           }}
         >
-          <img
-            src="/instagram.png"
-            alt="Instagram"
-            style={{
-              width: '40px',
+          <img 
+            src="/instagram.png" 
+            alt="Instagram" 
+            style={{ 
+              width: '40px', 
               height: 'auto',
-              filter: 'invert(15%) sepia(45%) saturate(3000%) hue-rotate(250deg) brightness(90%) contrast(110%)'
-            }}
+              filter: 'invert(12%) sepia(34%) saturate(2379%) hue-rotate(236deg) brightness(92%) contrast(96%)'
+            }} 
           />
         </a>
       </div>
