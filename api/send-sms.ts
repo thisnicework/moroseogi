@@ -23,13 +23,14 @@ export default async function handler(
   const apiSecret = process.env.COOLSMS_API_SECRET;
   const fromNumber = process.env.COOLSMS_FROM_NUMBER; // 인증된 발신 번호
 
-  if (!apiKey || !apiSecret || !fromNumber) {
-    // API 키가 없으면 시뮬레이션 모드로 작동 (테스트용)
-    console.log('CoolSMS API keys missing. Running in simulation mode.');
-    return response.status(200).json({ 
-      success: true, 
-      code: "1234", 
-      message: '시뮬레이션 모드: 1234를 입력하세요.' 
+  const missingKeys = [];
+  if (!apiKey) missingKeys.push('COOLSMS_API_KEY');
+  if (!apiSecret) missingKeys.push('COOLSMS_API_SECRET');
+  if (!fromNumber) missingKeys.push('COOLSMS_FROM_NUMBER');
+
+  if (missingKeys.length > 0) {
+    return response.status(400).json({ 
+      error: `환경 변수 누락: ${missingKeys.join(', ')}를 Vercel에 추가해야 합니다.` 
     });
   }
 
