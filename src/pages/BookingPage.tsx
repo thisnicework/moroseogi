@@ -17,10 +17,11 @@ export default function BookingPage() {
   })
 
   // SMS Verification state
-  const [verificationSent, setVerificationSent] = useState(false)
-  const [verificationCode, setVerificationCode] = useState('')
-  const [isVerified, setIsVerified] = useState(false)
-  const [sendingCode, setSendingCode] = useState(false)
+   const [verificationSent, setVerificationSent] = useState(false)
+   const [verificationCode, setVerificationCode] = useState('')
+   const [sentCode, setSentCode] = useState('')
+   const [isVerified, setIsVerified] = useState(false)
+   const [sendingCode, setSendingCode] = useState(false)
 
   useEffect(() => {
     fetchEvents().then(data => {
@@ -57,6 +58,7 @@ export default function BookingPage() {
       return
     }
 
+    setSendingCode(true)
     const toastId = toast.loading('인증번호를 발송 중입니다...')
     try {
       const res = await fetch('/api/send-sms', {
@@ -75,11 +77,13 @@ export default function BookingPage() {
       }
     } catch (error: any) {
       toast.error('문자 발송에 실패했습니다: ' + error.message, { id: toastId })
+    } finally {
+      setSendingCode(false)
     }
   }
 
   const checkVerificationCode = () => {
-    if (verificationCode === '1234') {
+    if (verificationCode === sentCode) {
       setIsVerified(true)
       toast.success('인증되었습니다.')
     } else {
@@ -280,7 +284,7 @@ export default function BookingPage() {
                       type="button"
                       className="btn btn-outline"
                       style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: isVerified ? 'none' : '4px 4px 0 var(--border)' }}
-                      onClick={sendVerificationCode}
+                      onClick={handleSendVerification}
                       disabled={isVerified || sendingCode}
                     >
                       {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증번호 전송'}

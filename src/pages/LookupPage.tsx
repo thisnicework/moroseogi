@@ -13,6 +13,7 @@ export default function LookupPage() {
   // SMS Verification state
   const [verificationSent, setVerificationSent] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
+  const [sentCode, setSentCode] = useState('')
   const [isVerified, setIsVerified] = useState(false)
   const [sendingCode, setSendingCode] = useState(false)
 
@@ -69,7 +70,7 @@ export default function LookupPage() {
   }
 
   const checkVerificationCode = () => {
-    if (verificationCode === '1234') {
+    if (verificationCode === sentCode) {
       setIsVerified(true)
       toast.success('인증되었습니다.')
     } else {
@@ -140,7 +141,7 @@ export default function LookupPage() {
                   type="button" 
                   className="btn btn-outline" 
                   style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: isVerified ? 'none' : '4px 4px 0 var(--border)' }}
-                  onClick={sendVerificationCode}
+                  onClick={handleSendVerification}
                   disabled={isVerified || sendingCode}
                 >
                   {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증번호 전송'}
