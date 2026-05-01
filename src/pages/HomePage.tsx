@@ -30,15 +30,14 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 예매하기 영역 */}
-        <div className="bento-card bento-item-actions">
-          <h3 style={{ marginBottom: '1.5rem', color: 'var(--purple-dark)' }}>TICKET</h3>
+        <div className="bento-card bento-item-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <h3 style={{ marginBottom: '0.5rem', color: 'var(--purple-dark)' }}>TICKET</h3>
           <Link to="/booking" className="btn" style={{ padding: '1.2rem 3rem', fontSize: '1.3rem', width: '100%', borderRadius: '12px' }}>
             예매하기
           </Link>
-          <div className="mt-4" style={{ fontWeight: '900', fontSize: '1rem' }}>
-            <Link to="/booking" style={{ color: 'var(--purple-dark)', textDecoration: 'underline', textUnderlineOffset: '4px' }}>예매 안내 및 유의사항 &rarr;</Link>
-          </div>
+          <Link to="/lookup" className="btn btn-outline" style={{ padding: '0.8rem 2rem', fontSize: '1rem', width: '100%', borderRadius: '12px' }}>
+            예매 조회 및 취소
+          </Link>
         </div>
 
         {/* 개별 메뉴 카드들 */}

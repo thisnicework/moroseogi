@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { fetchAllBookings, fetchEvents, cancelBooking, type Booking, type Event } from '../lib/supabase'
 import toast from 'react-hot-toast'
 
@@ -8,6 +7,19 @@ export default function AdminPage() {
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
   const [filterEventId, setFilterEventId] = useState('all')
+  
+  // Auth state
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [adminId, setAdminId] = useState('')
+  const [adminPassword, setAdminPassword] = useState('')
+
+  useEffect(() => {
+    // Check session storage on mount
+    const savedAuth = sessionStorage.getItem('admin_auth')
+    if (savedAuth === 'true') {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const loadData = async () => {
     setLoading(true)
@@ -22,8 +34,30 @@ export default function AdminPage() {
   }
 
   useEffect(() => {
-    loadData()
-  }, [])
+    if (isLoggedIn) {
+      loadData()
+    }
+  }, [isLoggedIn])
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    const envId = import.meta.env.VITE_ADMIN_ID || 'admin'
+    const envPw = import.meta.env.VITE_ADMIN_PASSWORD || 'admin1234'
+
+    if (adminId === envId && adminPassword === envPw) {
+      setIsLoggedIn(true)
+      sessionStorage.setItem('admin_auth', 'true')
+      toast.success('관리자 로그인 성공')
+    } else {
+      toast.error('아이디 또는 비밀번호가 올바르지 않습니다.')
+    }
+  }
+
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    sessionStorage.removeItem('admin_auth')
+    toast.success('로그아웃 되었습니다.')
+  }
 
   const handleCancel = async (id: number) => {
     if (!window.confirm('예매를 취소 처리하시겠습니까?')) return
@@ -40,10 +74,43 @@ export default function AdminPage() {
     ? bookings 
     : bookings.filter(b => b.event_id.toString() === filterEventId)
 
+  if (!isLoggedIn) {
+    return (
+      <main className="page" style={{ maxWidth: '400px', margin: '0 auto' }}>
+        <div className="card" style={{ marginTop: '4rem' }}>
+          <h1 className="mb-8 text-center" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>관리자 로그인</h1>
+          <form onSubmit={handleLogin}>
+            <div className="mb-4">
+              <label className="form-label">아이디</label>
+              <input 
+                type="text" 
+                className="form-control" 
+                value={adminId}
+                onChange={e => setAdminId(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-12">
+              <label className="form-label">비밀번호</label>
+              <input 
+                type="password" 
+                className="form-control" 
+                value={adminPassword}
+                onChange={e => setAdminPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-full">로그인</button>
+          </form>
+        </div>
+      </main>
+    )
+  }
+
   return (
     <main className="page" style={{ maxWidth: '1200px' }}>
-      <div className="mb-4">
-        <Link to="/" className="btn btn-outline">&larr; 홈으로</Link>
+      <div className="mb-4" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <button onClick={handleLogout} className="btn btn-outline" style={{ borderColor: 'var(--error)', color: 'var(--error)' }}>로그아웃</button>
       </div>
 
       <div className="card">
@@ -92,8 +159,14 @@ export default function AdminPage() {
                       <td><strong>{b.booking_code}</strong></td>
                       <td>{b.name}</td>
                       <td>{b.phone}</td>
-                      <td>{b.events?.title}</td>
-                      <td>{b.headcount}</td>
+                      <td>
+                        {b.events?.title || '모로서기'} 
+                        <br/>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          {b.events?.date || '날짜 정보 없음'}
+                        </span>
+                      </td>
+                      <td>{b.headcount}명</td>
                       <td style={{ color: b.status === 'cancelled' ? 'var(--error)' : 'var(--success)', fontWeight: 'bold' }}>
                         {b.status === 'cancelled' ? '취소됨' : '완료'}
                       </td>
@@ -101,9 +174,17 @@ export default function AdminPage() {
                         {b.status !== 'cancelled' && (
                           <button 
                             onClick={() => b.id && handleCancel(b.id)} 
-                            style={{ background: 'var(--error)', color: 'white', border: 'none', padding: '0.25rem 0.5rem', cursor: 'pointer', fontWeight: 'bold' }}
+                            className="btn"
+                            style={{ 
+                              background: 'var(--error)', 
+                              color: 'white', 
+                              border: 'none', 
+                              padding: '0.4rem 0.8rem', 
+                              fontSize: '0.85rem',
+                              boxShadow: 'none'
+                            }}
                           >
-                            취소
+                            취소처리
                           </button>
                         )}
                       </td>

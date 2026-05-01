@@ -66,11 +66,10 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'status' | 'bo
   return data[0] as Booking
 }
 
-export async function lookupBooking(name: string, phone: string) {
+export async function lookupBooking(phone: string) {
   const { data, error } = await supabase
     .from('bookings')
     .select('*, events(*)')
-    .eq('name', name)
     .eq('phone', phone)
     .order('created_at', { ascending: false })
 
