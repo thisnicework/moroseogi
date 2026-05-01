@@ -142,11 +142,11 @@ export default function LookupPage() {
           <form onSubmit={handleSearch}>
             <div className="form-group mb-10">
               <label className="form-label">연락처</label>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <input
                   type="tel"
                   className="form-control"
-                  style={{ flex: 1, height: '44px', fontSize: '0.9rem', padding: '0 0.75rem' }}
+                  style={{ flex: '7', height: '48px', fontSize: '1rem', padding: '0 0.75rem' }}
                   value={formatPhone(phone)}
                   onChange={handlePhoneChange}
                   placeholder="010-0000-0000"
@@ -157,17 +157,20 @@ export default function LookupPage() {
                   type="button"
                   className="btn btn-outline"
                   style={{ 
-                    padding: '0 0.75rem', 
-                    fontSize: '0.8rem', 
-                    height: '44px', 
-                    flexShrink: 0, 
+                    flex: '3',
+                    height: '48px', 
+                    padding: '0',
+                    fontSize: '0.85rem', 
                     whiteSpace: 'nowrap', 
-                    boxShadow: isVerified ? 'none' : '3px 3px 0 var(--border)' 
+                    boxShadow: isVerified ? 'none' : '3px 3px 0 var(--border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                   onClick={handleSendVerification}
                   disabled={isVerified || sendingCode}
                 >
-                  {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증 전송'}
+                  {sendingCode ? '...' : isVerified ? '인증됨' : '인증 전송'}
                 </button>
               </div>
               {verificationSent && !isVerified && (

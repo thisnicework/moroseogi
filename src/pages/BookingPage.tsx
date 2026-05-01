@@ -268,14 +268,15 @@ export default function BookingPage() {
             `}</style>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'start' }}>
-              <section>
-                <h2 className="mb-10" style={{ fontSize: '1.4rem', color: 'var(--purple-dark)' }}>2. 예매자 정보를 입력해주세요</h2>
+              <div className="card" style={{ padding: '2rem 1.5rem', boxShadow: '6px 6px 0 var(--purple)' }}>
+                <h2 className="mb-8" style={{ fontSize: '1.4rem', color: 'var(--purple-dark)', borderBottom: '3px solid var(--purple)', paddingBottom: '0.75rem' }}>2. 예매자 정보를 입력해주세요</h2>
 
-                <div className="form-group mb-10">
+                <div className="form-group mb-8">
                   <label className="form-label">이름</label>
                   <input
                     type="text"
                     className="form-control"
+                    style={{ height: '48px', fontSize: '1rem' }}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="성함을 입력하세요"
@@ -283,13 +284,13 @@ export default function BookingPage() {
                   />
                 </div>
 
-                <div className="form-group mb-10">
+                <div className="form-group mb-8">
                   <label className="form-label">연락처</label>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     <input
                       type="tel"
                       className="form-control"
-                      style={{ flex: 1, height: '44px', fontSize: '0.9rem', padding: '0 0.75rem' }}
+                      style={{ flex: '7', height: '48px', fontSize: '1rem', padding: '0 0.75rem' }}
                       value={formatPhone(formData.phone)}
                       onChange={handlePhoneChange}
                       placeholder="010-0000-0000"
@@ -300,19 +301,23 @@ export default function BookingPage() {
                       type="button"
                       className="btn btn-outline"
                       style={{ 
-                        padding: '0 0.75rem', 
-                        fontSize: '0.8rem', 
-                        height: '44px', 
-                        flexShrink: 0, 
+                        flex: '3',
+                        height: '48px', 
+                        padding: '0',
+                        fontSize: '0.85rem', 
                         whiteSpace: 'nowrap', 
-                        boxShadow: isVerified ? 'none' : '3px 3px 0 var(--border)' 
+                        boxShadow: isVerified ? 'none' : '3px 3px 0 var(--border)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
                       onClick={handleSendVerification}
                       disabled={isVerified || sendingCode}
                     >
-                      {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증 전송'}
+                      {sendingCode ? '...' : isVerified ? '인증됨' : '인증 전송'}
                     </button>
                   </div>
+
                   {verificationSent && !isVerified && (
                     <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', animation: 'slideIn 0.3s ease-out' }}>
                       <div style={{ flex: 1, position: 'relative' }}>
@@ -352,7 +357,7 @@ export default function BookingPage() {
                     * 본인 확인을 위해 휴대폰 인증이 필수입니다.
                   </p>
                 </div>
-              </section>
+              </div>
 
               <aside style={{
                 background: 'var(--bg)',
