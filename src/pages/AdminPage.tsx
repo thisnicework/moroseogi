@@ -27,8 +27,9 @@ export default function AdminPage() {
       const [bData, eData] = await Promise.all([fetchAllBookings(), fetchEvents()])
       setBookings(bData)
       setEvents(eData)
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
+      toast.error('데이터를 불러오지 못했습니다: ' + (err.message || '네트워크 오류'))
     }
     setLoading(false)
   }
