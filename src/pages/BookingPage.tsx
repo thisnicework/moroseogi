@@ -58,7 +58,7 @@ export default function BookingPage() {
 
       <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
         <h1 className="mb-8 text-center" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>예매하기</h1>
-        
+
         {loading ? (
           <p className="text-center">로딩 중...</p>
         ) : events.length === 0 ? (
@@ -67,10 +67,10 @@ export default function BookingPage() {
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label className="form-label">공연 일정</label>
-              <select 
+              <select
                 className="form-control"
                 value={formData.event_id}
-                onChange={(e) => setFormData({...formData, event_id: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, event_id: e.target.value })}
               >
                 {events.map(ev => (
                   <option key={ev.id} value={ev.id}>
@@ -82,23 +82,23 @@ export default function BookingPage() {
 
             <div className="form-group">
               <label className="form-label">예매자 이름</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 className="form-control"
                 value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                placeholder="홍길동"
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                // placeholder="홍길동"
                 required
               />
             </div>
 
             <div className="form-group">
               <label className="form-label">연락처 (- 없이 입력)</label>
-              <input 
-                type="tel" 
+              <input
+                type="tel"
                 className="form-control"
                 value={formData.phone}
-                onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/[^0-9]/g, '')})}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/[^0-9]/g, '') })}
                 placeholder="01012345678"
                 required
               />
@@ -106,12 +106,12 @@ export default function BookingPage() {
 
             <div className="form-group">
               <label className="form-label">관람 인원</label>
-              <select 
+              <select
                 className="form-control"
                 value={formData.headcount}
-                onChange={(e) => setFormData({...formData, headcount: Number(e.target.value)})}
+                onChange={(e) => setFormData({ ...formData, headcount: Number(e.target.value) })}
               >
-                {[1,2,3,4,5].map(n => (
+                {[1, 2, 3, 4, 5].map(n => (
                   <option key={n} value={n}>{n}명</option>
                 ))}
               </select>

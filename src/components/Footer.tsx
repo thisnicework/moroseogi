@@ -10,7 +10,7 @@ export default function Footer() {
         <Link to="/admin" style={{ textDecoration: 'underline' }}>어드민 대시보드</Link>
       </p>
       <p style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-        © 2026 TEAM 모로서기. All rights reserved.
+        © 2026 Hyunjun Ahn
       </p>
     </footer>
   )
