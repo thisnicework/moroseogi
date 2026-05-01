@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { fetchEvents, createBooking, type Event } from '../lib/supabase'
+import { Link } from 'react-router-dom'
+import { fetchEvents, createBooking, type Event, type Booking } from '../lib/supabase'
 import toast from 'react-hot-toast'
 
 export default function BookingPage() {
@@ -8,7 +8,6 @@ export default function BookingPage() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [successData, setSuccessData] = useState<Booking | null>(null)
-  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     event_id: '',
