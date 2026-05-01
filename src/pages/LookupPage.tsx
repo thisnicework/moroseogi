@@ -138,38 +138,45 @@ export default function LookupPage() {
       {!searched ? (
         <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
           <h1 className="mb-12 text-center" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>예매 조회</h1>
-          
+
           <form onSubmit={handleSearch}>
             <div className="form-group mb-10">
               <label className="form-label">연락처</label>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <input 
-                  type="tel" 
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input
+                  type="tel"
                   className="form-control"
-                  style={{ flex: 1, fontSize: '1.1rem', padding: '1rem' }}
+                  style={{ flex: 1, height: '44px', fontSize: '0.9rem', padding: '0 0.75rem' }}
                   value={formatPhone(phone)}
                   onChange={handlePhoneChange}
                   placeholder="010-0000-0000"
                   disabled={isVerified}
                   required
                 />
-                <button 
-                  type="button" 
-                  className="btn btn-outline" 
-                  style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: isVerified ? 'none' : '4px 4px 0 var(--border)' }}
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  style={{ 
+                    padding: '0 0.75rem', 
+                    fontSize: '0.8rem', 
+                    height: '44px', 
+                    flexShrink: 0, 
+                    whiteSpace: 'nowrap', 
+                    boxShadow: isVerified ? 'none' : '3px 3px 0 var(--border)' 
+                  }}
                   onClick={handleSendVerification}
                   disabled={isVerified || sendingCode}
                 >
-                  {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증번호 전송'}
+                  {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증 전송'}
                 </button>
               </div>
               {verificationSent && !isVerified && (
-                <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem', animation: 'slideIn 0.3s ease-out' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', animation: 'slideIn 0.3s ease-out' }}>
                   <div style={{ flex: 1, position: 'relative' }}>
                     <input
                       type="text"
                       className="form-control"
-                      style={{ width: '100%', padding: '1rem', paddingRight: '4rem' }}
+                      style={{ width: '100%', height: '44px', fontSize: '0.9rem', paddingRight: '3.5rem' }}
                       value={verificationCode}
                       onChange={(e) => setVerificationCode(e.target.value)}
                       placeholder="인증번호 6자리"
@@ -177,21 +184,21 @@ export default function LookupPage() {
                     {timeLeft > 0 && (
                       <span style={{ 
                         position: 'absolute', 
-                        right: '1rem', 
+                        right: '0.75rem', 
                         top: '50%', 
                         transform: 'translateY(-50%)',
                         color: 'var(--error)',
                         fontWeight: 'bold',
-                        fontSize: '1rem'
+                        fontSize: '0.85rem'
                       }}>
                         {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
                       </span>
                     )}
                   </div>
-                  <button 
-                    type="button" 
-                    className="btn" 
-                    style={{ padding: '0 2rem', fontSize: '1rem' }}
+                  <button
+                    type="button"
+                    className="btn"
+                    style={{ padding: '0 1rem', height: '44px', fontSize: '0.9rem', boxShadow: '3px 3px 0 var(--border)' }}
                     onClick={checkVerificationCode}
                   >
                     확인
@@ -203,12 +210,12 @@ export default function LookupPage() {
               </p>
             </div>
 
-            <button 
-              type="submit" 
-              className="btn w-full mt-8" 
+            <button
+              type="submit"
+              className="btn w-full mt-8"
               disabled={loading || !isVerified}
-              style={{ 
-                background: isVerified ? 'var(--purple)' : '#bbb', 
+              style={{
+                background: isVerified ? 'var(--purple)' : '#bbb',
                 color: 'white',
                 cursor: isVerified ? 'pointer' : 'not-allowed',
                 boxShadow: isVerified ? '6px 6px 0 var(--border)' : 'none',
@@ -223,9 +230,9 @@ export default function LookupPage() {
         <div className="card" style={{ maxWidth: '800px', margin: '0 auto', animation: 'slideIn 0.5s ease-out' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '2px solid var(--purple-light)', paddingBottom: '1rem' }}>
             <h2 style={{ margin: 0 }}>예매 내역</h2>
-            <button 
-              onClick={() => { setSearched(false); setIsVerified(false); setVerificationSent(false); }} 
-              className="btn btn-outline" 
+            <button
+              onClick={() => { setSearched(false); setIsVerified(false); setVerificationSent(false); }}
+              className="btn btn-outline"
               style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
             >
               다른 번호로 조회
@@ -238,10 +245,10 @@ export default function LookupPage() {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {bookings.map(b => (
-                <div key={b.id} style={{ 
-                  border: '3px solid var(--border)', 
-                  padding: '2rem', 
-                  display: 'flex', 
+                <div key={b.id} style={{
+                  border: '3px solid var(--border)',
+                  padding: '2rem',
+                  display: 'flex',
                   flexDirection: 'column',
                   gap: '1.5rem',
                   background: b.status === 'cancelled' ? 'rgba(0,0,0,0.03)' : 'var(--white)',
@@ -250,19 +257,19 @@ export default function LookupPage() {
                   overflow: 'hidden'
                 }}>
                   {b.status === 'cancelled' && (
-                    <div style={{ 
-                      position: 'absolute', 
-                      top: '1rem', 
-                      right: '-2rem', 
-                      background: 'var(--error)', 
-                      color: 'white', 
-                      padding: '0.25rem 3rem', 
+                    <div style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      right: '-2rem',
+                      background: 'var(--error)',
+                      color: 'white',
+                      padding: '0.25rem 3rem',
                       transform: 'rotate(45deg)',
                       fontSize: '0.8rem',
                       fontWeight: 'bold'
                     }}>CANCELLED</div>
                   )}
-                  
+
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                     <div>
                       <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: b.status === 'cancelled' ? 'var(--text-muted)' : 'var(--purple-dark)' }}>

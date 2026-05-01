@@ -17,28 +17,28 @@ export default function BookingPage() {
   })
 
   // SMS Verification state
-   const [verificationSent, setVerificationSent] = useState(false)
-   const [verificationCode, setVerificationCode] = useState('')
-   const [sentCode, setSentCode] = useState('')
-   const [isVerified, setIsVerified] = useState(false)
-   const [sendingCode, setSendingCode] = useState(false)
-   const [timeLeft, setTimeLeft] = useState(0) // 타이머 시간 (초)
+  const [verificationSent, setVerificationSent] = useState(false)
+  const [verificationCode, setVerificationCode] = useState('')
+  const [sentCode, setSentCode] = useState('')
+  const [isVerified, setIsVerified] = useState(false)
+  const [sendingCode, setSendingCode] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(0) // 타이머 시간 (초)
 
-   useEffect(() => {
-     let interval: any
-     if (timeLeft > 0) {
-       interval = setInterval(() => {
-         setTimeLeft((prev) => prev - 1)
-       }, 1000)
-     } else if (timeLeft === 0 && verificationSent && !isVerified) {
-       toast.error('인증 시간이 만료되었습니다. 다시 시도해주세요.')
-       setVerificationSent(false)
-       setSentCode('')
-     }
-     return () => clearInterval(interval)
-   }, [timeLeft, verificationSent, isVerified])
+  useEffect(() => {
+    let interval: any
+    if (timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1)
+      }, 1000)
+    } else if (timeLeft === 0 && verificationSent && !isVerified) {
+      toast.error('인증 시간이 만료되었습니다. 다시 시도해주세요.')
+      setVerificationSent(false)
+      setSentCode('')
+    }
+    return () => clearInterval(interval)
+  }, [timeLeft, verificationSent, isVerified])
 
-   useEffect(() => {
+  useEffect(() => {
     fetchEvents().then(data => {
       const finalEvents = data.length > 0 ? data : [
         { id: 1, title: '모로서기', date: '2026.05.16.(SAT)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 100 },
@@ -285,11 +285,11 @@ export default function BookingPage() {
 
                 <div className="form-group mb-10">
                   <label className="form-label">연락처</label>
-                  <div style={{ display: 'flex', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
                     <input
                       type="tel"
                       className="form-control"
-                      style={{ flex: 1 }}
+                      style={{ flex: 1, height: '44px', fontSize: '0.9rem', padding: '0 0.75rem' }}
                       value={formatPhone(formData.phone)}
                       onChange={handlePhoneChange}
                       placeholder="010-0000-0000"
@@ -299,20 +299,27 @@ export default function BookingPage() {
                     <button
                       type="button"
                       className="btn btn-outline"
-                      style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: isVerified ? 'none' : '4px 4px 0 var(--border)' }}
+                      style={{ 
+                        padding: '0 0.75rem', 
+                        fontSize: '0.8rem', 
+                        height: '44px', 
+                        flexShrink: 0, 
+                        whiteSpace: 'nowrap', 
+                        boxShadow: isVerified ? 'none' : '3px 3px 0 var(--border)' 
+                      }}
                       onClick={handleSendVerification}
                       disabled={isVerified || sendingCode}
                     >
-                      {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증번호 전송'}
+                      {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증 전송'}
                     </button>
                   </div>
                   {verificationSent && !isVerified && (
-                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.75rem', animation: 'slideIn 0.3s ease-out' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', animation: 'slideIn 0.3s ease-out' }}>
                       <div style={{ flex: 1, position: 'relative' }}>
                         <input
                           type="text"
                           className="form-control"
-                          style={{ width: '100%', paddingRight: '4rem' }}
+                          style={{ width: '100%', height: '44px', fontSize: '0.9rem', paddingRight: '3.5rem' }}
                           value={verificationCode}
                           onChange={(e) => setVerificationCode(e.target.value)}
                           placeholder="인증번호 6자리"
@@ -320,12 +327,12 @@ export default function BookingPage() {
                         {timeLeft > 0 && (
                           <span style={{ 
                             position: 'absolute', 
-                            right: '1rem', 
+                            right: '0.75rem', 
                             top: '50%', 
                             transform: 'translateY(-50%)',
                             color: 'var(--error)',
                             fontWeight: 'bold',
-                            fontSize: '0.9rem'
+                            fontSize: '0.85rem'
                           }}>
                             {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
                           </span>
@@ -334,7 +341,7 @@ export default function BookingPage() {
                       <button
                         type="button"
                         className="btn"
-                        style={{ padding: '0 2rem', fontSize: '0.9rem' }}
+                        style={{ padding: '0 1rem', height: '44px', fontSize: '0.9rem', boxShadow: '3px 3px 0 var(--border)' }}
                         onClick={checkVerificationCode}
                       >
                         확인
@@ -349,13 +356,13 @@ export default function BookingPage() {
 
               <aside style={{
                 background: 'var(--bg)',
-                padding: '3rem',
+                padding: '1.5rem',
                 border: '3px solid var(--border)',
-                boxShadow: '12px 12px 0 var(--border)',
+                boxShadow: '6px 6px 0 var(--border)',
                 position: 'sticky',
                 top: '2rem'
               }}>
-                <h3 style={{ fontSize: '1.6rem', marginBottom: '2rem', borderBottom: '3px solid var(--border)', paddingBottom: '0.75rem' }}>예매 요약</h3>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', borderBottom: '3px solid var(--border)', paddingBottom: '0.5rem' }}>예매 요약</h3>
                 <div style={{ fontSize: '1.1rem', lineHeight: '2' }}>
                   <div style={{ marginBottom: '1.5rem' }}>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.25rem' }}>공연</div>
@@ -368,9 +375,9 @@ export default function BookingPage() {
                       {events.find(e => e.id.toString() === formData.event_id)?.time}
                     </div>
                   </div>
-                  <div style={{ borderTop: '2px solid var(--border)', marginTop: '2rem', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ borderTop: '2px solid var(--border)', marginTop: '1.5rem', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontWeight: 'bold' }}>티켓 가격</span>
-                    <span style={{ fontWeight: '900', color: 'var(--purple)', fontSize: '1.6rem' }}>FREE</span>
+                    <span style={{ fontWeight: '900', color: 'var(--purple)', fontSize: '1.4rem' }}>FREE</span>
                   </div>
                 </div>
                 <button
@@ -380,11 +387,11 @@ export default function BookingPage() {
                   style={{
                     background: isVerified ? 'var(--purple-dark)' : '#bbb',
                     color: 'white',
-                    padding: '1.2rem',
-                    fontSize: '1.1rem',
+                    padding: '1rem',
+                    fontSize: '1rem',
                     cursor: isVerified ? 'pointer' : 'not-allowed',
-                    boxShadow: isVerified ? '6px 6px 0 var(--border)' : 'none',
-                    transform: isVerified ? 'none' : 'translate(4px, 4px)',
+                    boxShadow: isVerified ? '4px 4px 0 var(--border)' : 'none',
+                    transform: isVerified ? 'none' : 'translate(2px, 2px)',
                     whiteSpace: 'nowrap'
                   }}
                 >
