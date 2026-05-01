@@ -20,11 +20,10 @@ export default function HomePage() {
             <div style={{ display: 'flex', marginBottom: '0.5rem' }}>
               <span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px', flexShrink: 0 }}>일시</span>
               <div>
-                2026.05.16.(SAT) 18:30<br/>
-                05.17.(SUN) 18:30
+                2026.05.16.(SAT) - 05.17.(SUN) 18:30
               </div>
             </div>
-            <div style={{ display: 'flex', marginBottom: '0.5rem' }}><span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px' }}>장소</span> <div>서울예술대학교 중앙광장,<br/>빨간대문</div></div>
+            <div style={{ display: 'flex', marginBottom: '0.5rem' }}><span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px' }}>장소</span> <div>서울예술대학교 중앙광장, 빨간대문</div></div>
             <div style={{ display: 'flex', marginBottom: '0.5rem' }}><span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px' }}>러닝타임</span> <div>75분</div></div>
             <div style={{ display: 'flex' }}><span style={{ color: 'var(--purple)', display: 'inline-block', width: '80px' }}>지도교수</span> <div>장혜진 P</div></div>
           </div>
@@ -42,26 +41,22 @@ export default function HomePage() {
 
         {/* 개별 메뉴 카드들 */}
         <Link to="/intro" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>기획의도</h3>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>우리는 살아가며 끊임없이 정답과 기준을 요구받지만...</p>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>공연 소개</h3>
           <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
         </Link>
 
         <Link to="/points" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>관람 포인트</h3>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>각 작품이 드러내는 존재 방식을 따라가며...</p>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>작품 소개</h3>
           <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>작품 목록 보기 &rarr;</span>
         </Link>
 
-        <Link to="/professor" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>지도교수</h3>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>장혜진 교수</p>
-          <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
+        <Link to="/notice" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>공지사항</h3>
+          <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>내용 확인하기 &rarr;</span>
         </Link>
 
         <Link to="/credit" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
           <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>CREDIT</h3>
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>TEAM. 모로서기 및 도움을 주신 분들</p>
           <span className="mt-auto pt-4" style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
         </Link>
 
