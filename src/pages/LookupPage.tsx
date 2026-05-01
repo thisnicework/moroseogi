@@ -16,6 +16,21 @@ export default function LookupPage() {
   const [sentCode, setSentCode] = useState('')
   const [isVerified, setIsVerified] = useState(false)
   const [sendingCode, setSendingCode] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(0)
+
+  useEffect(() => {
+    let interval: any
+    if (timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1)
+      }, 1000)
+    } else if (timeLeft === 0 && verificationSent && !isVerified) {
+      toast.error('인증 시간이 만료되었습니다. 다시 시도해주세요.')
+      setVerificationSent(false)
+      setSentCode('')
+    }
+    return () => clearInterval(interval)
+  }, [timeLeft, verificationSent, isVerified])
 
   useEffect(() => {
     if (location.state?.phone) {
@@ -58,6 +73,7 @@ export default function LookupPage() {
       if (result.success) {
         setSentCode(result.code)
         setVerificationSent(true)
+        setTimeLeft(180) // 3분 설정
         toast.success(result.message || '인증번호가 발송되었습니다.', { id: toastId })
       } else {
         throw new Error(result.error || '발송 실패')
@@ -149,14 +165,29 @@ export default function LookupPage() {
               </div>
               {verificationSent && !isVerified && (
                 <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem', animation: 'slideIn 0.3s ease-out' }}>
-                  <input
-                    type="text"
-                    className="form-control"
-                    style={{ flex: 1, padding: '1rem' }}
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder="인증번호 4자리"
-                  />
+                  <div style={{ flex: 1, position: 'relative' }}>
+                    <input
+                      type="text"
+                      className="form-control"
+                      style={{ width: '100%', padding: '1rem', paddingRight: '4rem' }}
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                      placeholder="인증번호 6자리"
+                    />
+                    {timeLeft > 0 && (
+                      <span style={{ 
+                        position: 'absolute', 
+                        right: '1rem', 
+                        top: '50%', 
+                        transform: 'translateY(-50%)',
+                        color: 'var(--error)',
+                        fontWeight: 'bold',
+                        fontSize: '1rem'
+                      }}>
+                        {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                      </span>
+                    )}
+                  </div>
                   <button 
                     type="button" 
                     className="btn" 
