@@ -174,9 +174,16 @@ main.page {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card:hover {
+.card:hover, .bento-card:hover {
   transform: translate(-4px, -4px);
   box-shadow: 12px 12px 0px var(--purple);
+}
+
+@media (max-width: 768px) {
+  .card:hover, .bento-card:hover {
+    transform: none !important;
+    box-shadow: 8px 8px 0px var(--purple) !important;
+  }
 }
 
 .card h3 {
@@ -300,10 +307,6 @@ main.page {
   flex-direction: column;
 }
 
-.bento-card:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 12px 12px 0px var(--purple);
-}
 
 
 .bento-grid {
@@ -388,4 +391,16 @@ main.page {
   .bento-item-poster {
     grid-column: span 1;
   }
+}
+
+/* Scroll Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
