@@ -51,18 +51,31 @@ export default function BookingPage() {
     return `${phone.slice(0, 3)}-${phone.slice(3, 7)}-${phone.slice(7)}`
   }
 
-  const sendVerificationCode = () => {
-    if (formData.phone.length < 10) {
-      toast.error('올바른 연락처를 입력해주세요.')
+  const handleSendVerification = async () => {
+    if (!formData.phone || formData.phone.length < 10) {
+      toast.error('올바른 휴대폰 번호를 입력해주세요.')
       return
     }
-    setSendingCode(true)
-    // Simulate API call
-    setTimeout(() => {
-      setSendingCode(false)
-      setVerificationSent(true)
-      toast.success('인증번호가 발송되었습니다. (테스트 번호: 1234)')
-    }, 1000)
+
+    const toastId = toast.loading('인증번호를 발송 중입니다...')
+    try {
+      const res = await fetch('/api/send-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: formData.phone })
+      })
+      const result = await res.json()
+
+      if (result.success) {
+        setSentCode(result.code)
+        setVerificationSent(true)
+        toast.success(result.message || '인증번호가 발송되었습니다.', { id: toastId })
+      } else {
+        throw new Error(result.error || '발송 실패')
+      }
+    } catch (error: any) {
+      toast.error('문자 발송에 실패했습니다: ' + error.message, { id: toastId })
+    }
   }
 
   const checkVerificationCode = () => {
