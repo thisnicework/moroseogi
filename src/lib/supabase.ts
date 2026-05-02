@@ -92,6 +92,19 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'status' | 'bo
     throw new Error(`죄송합니다. 남은 좌석이 부족합니다. (현재 남은 좌석: ${totalSeats - currentOccupancy}석)`)
   }
 
+  // Check for duplicate booking
+  const { data: existingBooking } = await supabase
+    .from('bookings')
+    .select('id')
+    .eq('phone', booking.phone)
+    .eq('event_id', booking.event_id)
+    .neq('status', 'cancelled')
+    .maybeSingle()
+
+  if (existingBooking) {
+    throw new Error('이미 해당 회차에 예약된 내역이 있습니다. (중복 예매 불가)')
+  }
+
   // Generate a random 6-character alphanumeric booking code
   const booking_code = Math.random().toString(36).substring(2, 8).toUpperCase()
   
