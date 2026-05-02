@@ -17,7 +17,7 @@ export default function Footer() {
             src="/instagram.png" 
             alt="Instagram" 
             style={{ 
-              width: '40px', 
+              width: '36px', 
               height: 'auto',
               filter: 'invert(12%) sepia(34%) saturate(2379%) hue-rotate(236deg) brightness(92%) contrast(96%)'
             }} 
