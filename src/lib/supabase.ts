@@ -24,6 +24,7 @@ export type Event = {
   time: string
   location: string
   total_seats: number
+  occupancy?: number
 }
 
 export type Booking = {
@@ -39,25 +40,64 @@ export type Booking = {
 }
 
 export async function fetchEvents() {
-  const { data, error } = await supabase
+  const { data: events, error: eventError } = await supabase
     .from('events')
     .select('*')
     .order('id', { ascending: true })
 
-  if (error) {
-    console.error('Error fetching events:', error)
+  if (eventError) {
+    console.error('Error fetching events:', eventError)
     return []
   }
-  return data as Event[]
+
+  // Fetch active bookings to calculate occupancy
+  const { data: bookings, error: bookingError } = await supabase
+    .from('bookings')
+    .select('event_id, headcount')
+    .neq('status', 'cancelled')
+
+  if (bookingError) {
+    console.error('Error fetching bookings:', bookingError)
+    return events as Event[]
+  }
+
+  const eventData = (events || []).map(event => {
+    const occupancy = (bookings || [])
+      .filter(b => b.event_id === event.id)
+      .reduce((sum, b) => sum + b.headcount, 0)
+    return { ...event, occupancy }
+  })
+
+  return eventData as Event[]
 }
 
 export async function createBooking(booking: Omit<Booking, 'id' | 'status' | 'booking_code' | 'created_at'>) {
+  // Final availability check
+  const { data: events } = await supabase
+    .from('events')
+    .select('total_seats')
+    .eq('id', booking.event_id)
+    .single()
+
+  const { data: currentBookings } = await supabase
+    .from('bookings')
+    .select('headcount')
+    .eq('event_id', booking.event_id)
+    .neq('status', 'cancelled')
+
+  const totalSeats = events?.total_seats || 30
+  const currentOccupancy = (currentBookings || []).reduce((sum, b) => sum + b.headcount, 0)
+
+  if (currentOccupancy + booking.headcount > totalSeats) {
+    throw new Error(`죄송합니다. 남은 좌석이 부족합니다. (현재 남은 좌석: ${totalSeats - currentOccupancy}석)`)
+  }
+
   // Generate a random 6-character alphanumeric booking code
   const booking_code = Math.random().toString(36).substring(2, 8).toUpperCase()
   
   const { data, error } = await supabase
     .from('bookings')
-    .insert([{ ...booking, booking_code }])
+    .insert([{ ...booking, booking_code, status: 'confirmed' }])
     .select()
 
   if (error) {

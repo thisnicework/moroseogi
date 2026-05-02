@@ -39,18 +39,23 @@ export default function BookingPage() {
    }, [timeLeft, verificationSent, isVerified])
 
    useEffect(() => {
-    fetchEvents().then(data => {
-      const finalEvents = data.length > 0 ? data : [
-        { id: 1, title: '모로서기', date: '2026.05.16.(SAT)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 100 },
-        { id: 2, title: '모로서기', date: '2026.05.17.(SUN)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 100 }
-      ]
-      setEvents(finalEvents)
-      if (finalEvents.length > 0) {
-        setFormData(prev => ({ ...prev, event_id: finalEvents[0].id.toString() }))
-      }
-      setLoading(false)
-    })
-  }, [])
+     fetchEvents().then(data => {
+       const finalEvents = data.length > 0 ? data : [
+         { id: 1, title: '모로서기', date: '2026.05.16.(SAT)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 30, occupancy: 0 },
+         { id: 2, title: '모로서기', date: '2026.05.17.(SUN)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 30, occupancy: 0 }
+       ]
+       setEvents(finalEvents)
+       
+       // Default selection to first available event
+       const firstAvailable = finalEvents.find(e => (e.occupancy || 0) < e.total_seats)
+       if (firstAvailable) {
+         setFormData(prev => ({ ...prev, event_id: firstAvailable.id.toString() }))
+       } else if (finalEvents.length > 0) {
+         setFormData(prev => ({ ...prev, event_id: finalEvents[0].id.toString() }))
+       }
+       setLoading(false)
+     })
+   }, [])
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11)
@@ -115,6 +120,12 @@ export default function BookingPage() {
     }
     if (!isVerified) {
       toast.error('휴대폰 인증을 완료해주세요.')
+      return
+    }
+
+    const selectedEvent = events.find(ev => ev.id.toString() === formData.event_id)
+    if (selectedEvent && (selectedEvent.occupancy || 0) >= selectedEvent.total_seats) {
+      toast.error('선택하신 회차는 이미 매진되었습니다.')
       return
     }
 
@@ -203,28 +214,43 @@ export default function BookingPage() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                 {events.map(ev => {
                   const isSelected = formData.event_id === ev.id.toString()
+                  const occupancy = ev.occupancy || 0
+                  const isFull = occupancy >= ev.total_seats
+
                   return (
                     <div
                       key={ev.id}
-                      onClick={() => setFormData({ ...formData, event_id: ev.id.toString() })}
+                      onClick={() => !isFull && setFormData({ ...formData, event_id: ev.id.toString() })}
                       style={{
                         padding: '2.5rem 2rem',
                         border: '3px solid var(--border)',
-                        cursor: 'pointer',
-                        background: isSelected ? 'var(--purple)' : 'var(--white)',
-                        color: isSelected ? 'var(--white)' : 'var(--text)',
-                        boxShadow: isSelected ? '0 0 0 transparent' : '8px 8px 0 var(--border)',
+                        cursor: isFull ? 'not-allowed' : 'pointer',
+                        background: isSelected ? 'var(--purple)' : isFull ? '#eee' : 'var(--white)',
+                        color: isSelected ? 'var(--white)' : isFull ? '#888' : 'var(--text)',
+                        boxShadow: isSelected ? '0 0 0 transparent' : isFull ? 'none' : '8px 8px 0 var(--border)',
                         transform: isSelected ? 'translate(4px, 4px)' : 'none',
                         transition: 'all 0.15s ease',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '1rem',
                         minHeight: '180px',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        position: 'relative',
+                        opacity: isFull && !isSelected ? 0.7 : 1
                       }}
                     >
                       <div style={{ fontWeight: '700', fontSize: '1.4rem', lineHeight: '1.2' }}>{ev.date}<br />{ev.time}</div>
                       <div style={{ fontSize: '1rem', opacity: 0.9 }}>{ev.location.includes('빨간대문') ? ev.location : `${ev.location}, 빨간대문`}</div>
+                      
+                      <div style={{ 
+                        marginTop: '0.5rem', 
+                        fontSize: '0.95rem', 
+                        fontWeight: '600',
+                        color: isFull ? 'var(--error)' : (isSelected ? 'var(--white)' : 'var(--purple)')
+                      }}>
+                        {isFull ? '매진 (SOLD OUT)' : `남은 좌석: ${ev.total_seats - occupancy}/${ev.total_seats}`}
+                      </div>
+
                       <div style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -239,7 +265,7 @@ export default function BookingPage() {
                           width: '20px',
                           height: '20px',
                           borderRadius: '50%',
-                          border: `3px solid ${isSelected ? 'var(--white)' : 'var(--border)'}`,
+                          border: `3px solid ${isSelected ? 'var(--white)' : isFull ? '#888' : 'var(--border)'}`,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -255,7 +281,7 @@ export default function BookingPage() {
                             }} />
                           )}
                         </div>
-                        {isSelected ? 'SELECTED' : 'SELECT'}
+                        {isFull ? 'FULL' : isSelected ? 'SELECTED' : 'SELECT'}
                       </div>
                     </div>
                   )
