@@ -63,7 +63,7 @@ export default function AdminPage() {
   const handleCancel = async (id: number) => {
     if (!window.confirm('예매를 취소 처리하시겠습니까?')) return
     try {
-      await cancelBooking(id)
+      await cancelBooking(id, 'admin')
       toast.success('취소 처리되었습니다.')
       loadData()
     } catch (error: any) {
@@ -74,6 +74,13 @@ export default function AdminPage() {
   const filteredBookings = filterEventId === 'all' 
     ? bookings 
     : bookings.filter(b => b.event_id.toString() === filterEventId)
+
+  const getStatusDisplay = (status?: string) => {
+    if (status === 'cancelled_by_user') return { text: '본인취소', color: 'var(--error)' }
+    if (status === 'cancelled_by_admin') return { text: '관리자취소', color: 'var(--error)' }
+    if (status === 'cancelled') return { text: '취소됨', color: 'var(--error)' }
+    return { text: '완료', color: 'var(--success)' }
+  }
 
   if (!isLoggedIn) {
     return (
@@ -155,22 +162,26 @@ export default function AdminPage() {
                     <td colSpan={7} className="text-center">예매 내역이 없습니다.</td>
                   </tr>
                 ) : (
-                  filteredBookings.map(b => (
-                    <tr key={b.id} style={{ opacity: b.status === 'cancelled' ? 0.6 : 1 }}>
-                      <td><strong>{b.booking_code}</strong></td>
-                      <td>{b.name}</td>
-                      <td>{b.phone}</td>
-                      <td>
-                        {b.events?.title || '모로서기'} 
-                        <br/>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                          {b.events?.date || '날짜 정보 없음'}
-                        </span>
-                      </td>
-                      <td>{b.headcount}명</td>
-                      <td style={{ color: b.status === 'cancelled' ? 'var(--error)' : 'var(--success)', fontWeight: 'bold' }}>
-                        {b.status === 'cancelled' ? '취소됨' : '완료'}
-                      </td>
+                  filteredBookings.map(b => {
+                    const statusInfo = getStatusDisplay(b.status)
+                    const isCancelled = b.status?.startsWith('cancelled')
+
+                    return (
+                      <tr key={b.id} style={{ opacity: isCancelled ? 0.6 : 1 }}>
+                        <td><strong>{b.booking_code}</strong></td>
+                        <td>{b.name}</td>
+                        <td>{b.phone}</td>
+                        <td>
+                          {b.events?.title || '모로서기'} 
+                          <br/>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                            {b.events?.date || '날짜 정보 없음'}
+                          </span>
+                        </td>
+                        <td>{b.headcount}명</td>
+                        <td style={{ color: statusInfo.color, fontWeight: 'bold' }}>
+                          {statusInfo.text}
+                        </td>
                       <td>
                         {b.status !== 'cancelled' && (
                           <button 

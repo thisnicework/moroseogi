@@ -50,11 +50,11 @@ export async function fetchEvents() {
     return []
   }
 
-  // Fetch active bookings to calculate occupancy
+  // Fetch active bookings to calculate occupancy (anything NOT cancelled)
   const { data: bookings, error: bookingError } = await supabase
     .from('bookings')
     .select('event_id, headcount')
-    .neq('status', 'cancelled')
+    .not('status', 'ilike', 'cancelled%')
 
   if (bookingError) {
     console.error('Error fetching bookings:', bookingError)
@@ -83,7 +83,7 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'status' | 'bo
     .from('bookings')
     .select('headcount')
     .eq('event_id', booking.event_id)
-    .neq('status', 'cancelled')
+    .not('status', 'ilike', 'cancelled%')
 
   const totalSeats = events?.total_seats || 30
   const currentOccupancy = (currentBookings || []).reduce((sum, b) => sum + b.headcount, 0)
@@ -98,7 +98,7 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'status' | 'bo
     .select('id')
     .eq('phone', booking.phone)
     .eq('event_id', booking.event_id)
-    .neq('status', 'cancelled')
+    .not('status', 'ilike', 'cancelled%')
     .maybeSingle()
 
   if (existingBooking) {
@@ -132,10 +132,12 @@ export async function lookupBooking(phone: string) {
   return data as Booking[]
 }
 
-export async function cancelBooking(bookingId: number) {
+export async function cancelBooking(bookingId: number, source: 'user' | 'admin' = 'user') {
+  const status = source === 'admin' ? 'cancelled_by_admin' : 'cancelled_by_user'
+  
   const { error } = await supabase
     .from('bookings')
-    .update({ status: 'cancelled' })
+    .update({ status })
     .eq('id', bookingId)
 
   if (error) {

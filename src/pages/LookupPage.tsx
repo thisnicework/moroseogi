@@ -121,7 +121,7 @@ export default function LookupPage() {
     if (!window.confirm('정말 예매를 취소하시겠습니까?')) return
 
     try {
-      await cancelBooking(id)
+      await cancelBooking(id, 'user')
       toast.success('예매가 취소되었습니다.')
       handleSearch()
     } catch (error: any) {
@@ -237,63 +237,70 @@ export default function LookupPage() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {bookings.map(b => (
-                <div key={b.id} style={{
-                  border: '3px solid var(--border)',
-                  padding: '2rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1.5rem',
-                  background: b.status === 'cancelled' ? 'rgba(0,0,0,0.03)' : 'var(--white)',
-                  boxShadow: '6px 6px 0 var(--border)',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}>
-                  {b.status === 'cancelled' && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '1rem',
-                      right: '-2rem',
-                      background: 'var(--error)',
-                      color: 'white',
-                      padding: '0.25rem 3rem',
-                      transform: 'rotate(45deg)',
-                      fontSize: '0.8rem',
-                      fontWeight: '600'
-                    }}>CANCELLED</div>
-                  )}
+              {bookings.map(b => {
+                const isCancelled = b.status?.startsWith('cancelled')
+                const statusText = b.status === 'cancelled_by_user' ? '본인취소' : 
+                                 b.status === 'cancelled_by_admin' ? '관리자취소' : 
+                                 b.status === 'cancelled' ? '취소됨' : '예약완료'
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-                    <div>
-                      <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: b.status === 'cancelled' ? 'var(--text-muted)' : 'var(--purple-dark)' }}>
-                        {b.events?.title}
-                      </h3>
-                      <p style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '0.5rem' }}>
-                        {b.events?.date} {b.events?.time}
-                      </p>
-                      <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                        {b.events?.location && (b.events.location.includes('빨간대문') ? b.events.location : `${b.events.location}, 빨간대문`)}
-                      </p>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>예매 코드</p>
-                      <p style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--purple)' }}>{b.booking_code}</p>
-                    </div>
-                  </div>
-
-                  <div style={{ borderTop: '1px solid #eee', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <span style={{ fontSize: '0.95rem', marginRight: '1rem' }}>상태: <strong>{b.status === 'cancelled' ? '취소됨' : '예약완료'}</strong></span>
-                      <span style={{ fontSize: '0.95rem' }}>인원: <strong>{b.headcount}명</strong></span>
-                    </div>
-                    {b.status !== 'cancelled' && (
-                      <button onClick={() => b.id && handleCancel(b.id)} className="btn" style={{ padding: '0.6rem 1.5rem', background: 'var(--error)', borderColor: 'var(--error)', fontSize: '0.9rem' }}>
-                        취소하기
-                      </button>
+                return (
+                  <div key={b.id} style={{
+                    border: '3px solid var(--border)',
+                    padding: '2rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.5rem',
+                    background: isCancelled ? 'rgba(0,0,0,0.03)' : 'var(--white)',
+                    boxShadow: '6px 6px 0 var(--border)',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    {isCancelled && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '1rem',
+                        right: '-2rem',
+                        background: 'var(--error)',
+                        color: 'white',
+                        padding: '0.25rem 3rem',
+                        transform: 'rotate(45deg)',
+                        fontSize: '0.8rem',
+                        fontWeight: '600'
+                      }}>CANCELLED</div>
                     )}
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+                      <div>
+                        <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: isCancelled ? 'var(--text-muted)' : 'var(--purple-dark)' }}>
+                          {b.events?.title}
+                        </h3>
+                        <p style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '0.5rem' }}>
+                          {b.events?.date} {b.events?.time}
+                        </p>
+                        <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                          {b.events?.location && (b.events.location.includes('빨간대문') ? b.events.location : `${b.events.location}, 빨간대문`)}
+                        </p>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>예매 코드</p>
+                        <p style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--purple)' }}>{b.booking_code}</p>
+                      </div>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid #eee', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <span style={{ fontSize: '0.95rem', marginRight: '1rem' }}>상태: <strong>{statusText}</strong></span>
+                        <span style={{ fontSize: '0.95rem' }}>인원: <strong>{b.headcount}명</strong></span>
+                      </div>
+                      {!isCancelled && (
+                        <button onClick={() => b.id && handleCancel(b.id)} className="btn" style={{ padding: '0.6rem 1.5rem', background: 'var(--error)', borderColor: 'var(--error)', fontSize: '0.9rem' }}>
+                          취소하기
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
