@@ -15,6 +15,17 @@ import LookupPage from './pages/LookupPage.tsx'
 import AdminPage from './pages/AdminPage.tsx'
 import NoticePage from './pages/NoticePage.tsx'
 
+// Browser detection for scaling
+const ua = navigator.userAgent.toLowerCase();
+const isSafari = ua.includes('safari') && !ua.includes('chrome') && !ua.includes('chromium');
+const isChrome = ua.includes('chrome') || ua.includes('chromium');
+
+if (isSafari) {
+  document.documentElement.classList.add('is-safari');
+} else if (isChrome) {
+  document.documentElement.classList.add('is-chrome');
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>

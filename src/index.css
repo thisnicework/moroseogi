@@ -2,7 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
 
 html {
-  font-size: 80%;
+  font-size: 80%; /* Default fallback */
+}
+
+html.is-safari {
+  font-size: 90%;
+}
+
+html.is-chrome {
+  font-size: 70%;
 }
 
 :root {
