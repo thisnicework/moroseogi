@@ -263,7 +263,7 @@ export default function BookingPage() {
                         fontWeight: '600',
                         color: isFull ? 'var(--error)' : (isSelected ? 'var(--white)' : 'var(--purple)')
                       }}>
-                        {isFull ? '매진 (SOLD OUT)' : `남은 좌석: ${ev.total_seats - occupancy}/${ev.total_seats}`}
+                        {`남은 좌석: ${ev.total_seats - occupancy}/${ev.total_seats}`}
                       </div>
 
                       <div style={{
@@ -298,7 +298,7 @@ export default function BookingPage() {
                             )}
                           </div>
                         )}
-                        {isFull ? 'FULL' : isSelected ? 'SELECTED' : 'SELECT'}
+                        {isFull ? '매진' : isSelected ? 'SELECTED' : 'SELECT'}
                       </div>
                     </div>
                   )
