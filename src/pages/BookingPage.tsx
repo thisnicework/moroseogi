@@ -191,7 +191,9 @@ export default function BookingPage() {
     )
   }
 
-  return (
+    const allFull = events.length > 0 && events.every(ev => (ev.occupancy || 0) >= ev.total_seats)
+
+    return (
     <main className="page" style={{ maxWidth: '900px', margin: '0 auto' }}>
       <div className="mb-8">
         <Link to="/" className="btn btn-outline">&larr; 돌아가기</Link>
@@ -209,6 +211,20 @@ export default function BookingPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            {allFull && (
+              <div style={{
+                background: 'var(--error)',
+                color: 'white',
+                padding: '1rem',
+                textAlign: 'center',
+                fontWeight: '700',
+                marginBottom: '2rem',
+                border: '3px solid var(--border)',
+                boxShadow: '4px 4px 0 var(--border)'
+              }}>
+                현재 모든 회차가 매진되었습니다. 다음에 다시 방문해주세요!
+              </div>
+            )}
             <section style={{ marginBottom: '5rem' }}>
               <h2 className="mb-10" style={{ fontSize: '1.4rem', color: 'var(--purple-dark)' }}>1. 공연 일정을 선택해주세요</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
@@ -223,20 +239,19 @@ export default function BookingPage() {
                       onClick={() => !isFull && setFormData({ ...formData, event_id: ev.id.toString() })}
                       style={{
                         padding: '2.5rem 2rem',
-                        border: '3px solid var(--border)',
+                        border: `0.1875rem solid ${isFull ? 'var(--border)' : 'var(--border)'}`,
                         cursor: isFull ? 'not-allowed' : 'pointer',
-                        background: isSelected ? 'var(--purple)' : isFull ? '#eee' : 'var(--white)',
-                        color: isSelected ? 'var(--white)' : isFull ? '#888' : 'var(--text)',
-                        boxShadow: isSelected ? '0 0 0 transparent' : isFull ? 'none' : '8px 8px 0 var(--border)',
-                        transform: isSelected ? 'translate(4px, 4px)' : 'none',
+                        background: (isFull) ? '#ffffff' : (isSelected ? 'var(--purple)' : '#ffffff'),
+                        color: (isFull) ? 'var(--text)' : (isSelected ? 'var(--white)' : 'var(--text)'),
+                        boxShadow: (isSelected || isFull) ? '0 0 0 transparent' : '0.5rem 0.5rem 0 var(--border)',
+                        transform: (isSelected || isFull) ? 'translate(0.25rem, 0.25rem)' : 'none',
                         transition: 'all 0.15s ease',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '1rem',
                         minHeight: '180px',
                         justifyContent: 'center',
-                        position: 'relative',
-                        opacity: isFull && !isSelected ? 0.7 : 1
+                        position: 'relative'
                       }}
                     >
                       <div style={{ fontWeight: '700', fontSize: '1.4rem', lineHeight: '1.2' }}>{ev.date}<br />{ev.time}</div>
@@ -261,26 +276,28 @@ export default function BookingPage() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em'
                       }}>
-                        <div style={{
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          border: `3px solid ${isSelected ? 'var(--white)' : isFull ? '#888' : 'var(--border)'}`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transition: 'all 0.2s ease'
-                        }}>
-                          {isSelected && (
-                            <div style={{
-                              width: '10px',
-                              height: '10px',
-                              borderRadius: '50%',
-                              background: 'var(--white)',
-                              animation: 'scaleUp 0.2s ease-out'
-                            }} />
-                          )}
-                        </div>
+                        {!isFull && (
+                          <div style={{
+                            width: '1.25rem',
+                            height: '1.25rem',
+                            borderRadius: '50%',
+                            border: `0.1875rem solid ${isSelected ? 'var(--white)' : 'var(--border)'}`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.2s ease'
+                          }}>
+                            {isSelected && (
+                              <div style={{
+                                width: '0.625rem',
+                                height: '0.625rem',
+                                borderRadius: '50%',
+                                background: 'var(--white)',
+                                animation: 'scaleUp 0.2s ease-out'
+                              }} />
+                            )}
+                          </div>
+                        )}
                         {isFull ? 'FULL' : isSelected ? 'SELECTED' : 'SELECT'}
                       </div>
                     </div>
@@ -296,7 +313,14 @@ export default function BookingPage() {
               }
             `}</style>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'start' }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+              gap: '4rem', 
+              alignItems: 'start',
+              opacity: allFull ? 0.5 : 1,
+              pointerEvents: allFull ? 'none' : 'auto'
+            }}>
               <section>
                 <h2 className="mb-10" style={{ fontSize: '1.4rem', color: 'var(--purple-dark)' }}>2. 예매자 정보를 입력해주세요</h2>
 
@@ -308,6 +332,7 @@ export default function BookingPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="성함을 입력하세요"
+                    disabled={allFull}
                     required
                   />
                 </div>
@@ -322,15 +347,15 @@ export default function BookingPage() {
                       value={formatPhone(formData.phone)}
                       onChange={handlePhoneChange}
                       placeholder="010-0000-0000"
-                      disabled={isVerified}
+                      disabled={isVerified || allFull}
                       required
                     />
                     <button
                       type="button"
                       className="btn btn-outline"
-                      style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: isVerified ? 'none' : '4px 4px 0 var(--border)' }}
+                      style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: (isVerified || allFull) ? 'none' : '4px 4px 0 var(--border)' }}
                       onClick={handleSendVerification}
-                      disabled={isVerified || sendingCode}
+                      disabled={isVerified || sendingCode || allFull}
                     >
                       {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증번호 전송'}
                     </button>
