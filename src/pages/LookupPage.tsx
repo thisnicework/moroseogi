@@ -137,14 +137,14 @@ export default function LookupPage() {
 
       {!searched ? (
         <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <h1 className="mb-12 text-center" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>예매 조회</h1>
-          
+          <h1 className="mb-12 text-center" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem', fontSize: '2.5rem' }}>예매 조회</h1>
+
           <form onSubmit={handleSearch}>
             <div className="form-group mb-10">
               <label className="form-label">연락처</label>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <input 
-                  type="tel" 
+                <input
+                  type="tel"
                   className="form-control"
                   style={{ flex: 1, fontSize: '1.1rem', padding: '1rem' }}
                   value={formatPhone(phone)}
@@ -153,9 +153,9 @@ export default function LookupPage() {
                   disabled={isVerified}
                   required
                 />
-                <button 
-                  type="button" 
-                  className="btn btn-outline" 
+                <button
+                  type="button"
+                  className="btn btn-outline"
                   style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: isVerified ? 'none' : '4px 4px 0 var(--border)' }}
                   onClick={handleSendVerification}
                   disabled={isVerified || sendingCode}
@@ -175,10 +175,10 @@ export default function LookupPage() {
                       placeholder="인증번호 6자리"
                     />
                     {timeLeft > 0 && (
-                      <span style={{ 
-                        position: 'absolute', 
-                        right: '1rem', 
-                        top: '50%', 
+                      <span style={{
+                        position: 'absolute',
+                        right: '1rem',
+                        top: '50%',
                         transform: 'translateY(-50%)',
                         color: 'var(--error)',
                         fontWeight: '600',
@@ -188,9 +188,9 @@ export default function LookupPage() {
                       </span>
                     )}
                   </div>
-                  <button 
-                    type="button" 
-                    className="btn" 
+                  <button
+                    type="button"
+                    className="btn"
                     style={{ padding: '0 2rem', fontSize: '1rem' }}
                     onClick={checkVerificationCode}
                   >
@@ -203,12 +203,12 @@ export default function LookupPage() {
               </p>
             </div>
 
-            <button 
-              type="submit" 
-              className="btn w-full mt-8" 
+            <button
+              type="submit"
+              className="btn w-full mt-8"
               disabled={loading || !isVerified}
-              style={{ 
-                background: isVerified ? 'var(--purple)' : '#bbb', 
+              style={{
+                background: isVerified ? 'var(--purple)' : '#bbb',
                 color: 'white',
                 cursor: isVerified ? 'pointer' : 'not-allowed',
                 boxShadow: isVerified ? '6px 6px 0 var(--border)' : 'none',
@@ -222,10 +222,10 @@ export default function LookupPage() {
       ) : (
         <div className="card" style={{ maxWidth: '800px', margin: '0 auto', animation: 'slideIn 0.5s ease-out' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', borderBottom: '2px solid var(--purple-light)', paddingBottom: '1rem' }}>
-            <h2 style={{ margin: 0 }}>예매 내역</h2>
-            <button 
-              onClick={() => { setSearched(false); setIsVerified(false); setVerificationSent(false); }} 
-              className="btn btn-outline" 
+            <h2 style={{ margin: 0, fontSize: '1.4rem' }}>예매 내역</h2>
+            <button
+              onClick={() => { setSearched(false); setIsVerified(false); setVerificationSent(false); }}
+              className="btn btn-outline"
               style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
             >
               다른 번호로 조회
@@ -238,10 +238,10 @@ export default function LookupPage() {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {bookings.map(b => (
-                <div key={b.id} style={{ 
-                  border: '3px solid var(--border)', 
-                  padding: '2rem', 
-                  display: 'flex', 
+                <div key={b.id} style={{
+                  border: '3px solid var(--border)',
+                  padding: '2rem',
+                  display: 'flex',
                   flexDirection: 'column',
                   gap: '1.5rem',
                   background: b.status === 'cancelled' ? 'rgba(0,0,0,0.03)' : 'var(--white)',
@@ -250,19 +250,19 @@ export default function LookupPage() {
                   overflow: 'hidden'
                 }}>
                   {b.status === 'cancelled' && (
-                    <div style={{ 
-                      position: 'absolute', 
-                      top: '1rem', 
-                      right: '-2rem', 
-                      background: 'var(--error)', 
-                      color: 'white', 
-                      padding: '0.25rem 3rem', 
+                    <div style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      right: '-2rem',
+                      background: 'var(--error)',
+                      color: 'white',
+                      padding: '0.25rem 3rem',
                       transform: 'rotate(45deg)',
                       fontSize: '0.8rem',
                       fontWeight: '600'
                     }}>CANCELLED</div>
                   )}
-                  
+
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                     <div>
                       <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: b.status === 'cancelled' ? 'var(--text-muted)' : 'var(--purple-dark)' }}>
