@@ -140,6 +140,27 @@ export default function AdminPage() {
           <button onClick={loadData} className="btn btn-outline" style={{ padding: '0.5rem 1rem' }}>새로고침</button>
         </div>
 
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '3rem' }}>
+          {events.map(ev => (
+            <div key={ev.id} style={{ 
+              padding: '1.5rem', 
+              border: '3px solid var(--border)', 
+              background: 'white', 
+              boxShadow: '4px 4px 0 var(--border)',
+              flex: '1', 
+              minWidth: '220px' 
+            }}>
+              <div style={{ fontWeight: '700', fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>{ev.date} {ev.time}</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span style={{ fontSize: '0.9rem', fontWeight: '600' }}>현재 예약인원</span>
+                <span style={{ fontSize: '1.8rem', fontWeight: '800', color: (ev.occupancy || 0) >= ev.total_seats ? 'var(--error)' : 'var(--purple)' }}>
+                  {ev.occupancy || 0} / {ev.total_seats}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
         {loading ? (
           <p>로딩 중...</p>
         ) : (
