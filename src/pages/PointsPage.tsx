@@ -5,7 +5,7 @@ export const pointsData = [
     id: 1,
     title: '① 다 GYM',
     choreographer: '김다은 손승하 양브라이언 양하은 염지원',
-    duration: '15분',
+    duration: '18분',
     location: '서울예술대학교 중앙광장',
     keywords: ['어린 시절', '시도', 'Identity'],
     description: '"다 GYM"은 자아 형성의 과정을 되돌아보는 시선을 통해 자신을 다시금 바라보는 작품이다.\n정글짐은 성장과 시도, 실패, 관계가 이루어지는 상징적 공간이자 어린 시절 자아형성의 과정을 통해 현재의 ‘나’를 조명하고 이해하고자 한다.',
