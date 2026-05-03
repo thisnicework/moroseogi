@@ -225,7 +225,10 @@ export default function BookingPage() {
       </div>
 
       <div className="card">
-        <h1 className="mb-12" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>티켓 예매</h1>
+        <h1 className="mb-4" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>티켓 예매</h1>
+        <p className="mb-12" style={{ color: 'var(--error)', fontWeight: '700', fontSize: '1.05rem' }}>
+          * 본 공연은 회차별 1인 1매로 예매가 제한됩니다.
+        </p>
 
         {loading ? (
           <p className="text-center">공연 정보를 불러오는 중입니다...</p>
