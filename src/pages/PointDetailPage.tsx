@@ -1,8 +1,9 @@
-import { useParams, Link, Navigate } from 'react-router-dom'
+import { useParams, useNavigate, Navigate } from 'react-router-dom'
 import { pointsData } from './PointsPage'
 
 export default function PointDetailPage() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const point = pointsData.find((p) => p.id === Number(id))
 
   if (!point) return <Navigate to="/points" />
@@ -10,7 +11,7 @@ export default function PointDetailPage() {
   return (
     <main className="page">
       <div className="mb-4">
-        <Link to="/points" className="btn btn-outline">&larr; 목록으로</Link>
+        <button onClick={() => navigate(-1)} className="btn btn-outline">&larr; 목록으로</button>
       </div>
 
       <div className="card" style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto' }}>

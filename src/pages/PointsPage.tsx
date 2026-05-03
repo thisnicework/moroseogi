@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const pointsData = [
   {
@@ -48,21 +48,16 @@ export const pointsData = [
 ]
 
 export default function PointsPage() {
+  const navigate = useNavigate()
   return (
     <main className="page">
       <div className="mb-4">
-        <Link to="/" className="btn btn-outline">&larr; 홈으로</Link>
+        <button onClick={() => navigate(-1)} className="btn btn-outline">&larr; 홈으로</button>
       </div>
 
       <h1 className="mb-8 text-center">작품 소개</h1>
 
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(2, 1fr)', 
-        gap: '2rem',
-        maxWidth: '900px',
-        margin: '0 auto'
-      }}>
+      <div className="points-grid">
         {pointsData.map((point) => (
           <Link key={point.id} to={`/points/${point.id}`} className="card">
             <h2 className="mb-2" style={{ fontSize: '1.5rem' }}>{point.title}</h2>

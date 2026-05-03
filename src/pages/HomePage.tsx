@@ -24,7 +24,7 @@ export default function HomePage() {
               <span style={{ fontWeight: '600', minWidth: '70px' }}>일시</span> |
               <div>
                 <div>2026.05.16.(SAT) 18:30</div>
-                <div style={{ paddingLeft: '2.1rem' }}>- 05.17.(SUN) 18:30</div>
+                <div style={{ paddingLeft: '2rem' }}>- 05.17.(SUN) 18:30</div>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.2rem' }}>

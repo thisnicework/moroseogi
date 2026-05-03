@@ -17,45 +17,45 @@ export default function BookingPage() {
   })
 
   // SMS Verification state
-   const [verificationSent, setVerificationSent] = useState(false)
-   const [verificationCode, setVerificationCode] = useState('')
-   const [sentCode, setSentCode] = useState('')
-   const [isVerified, setIsVerified] = useState(false)
-   const [sendingCode, setSendingCode] = useState(false)
-   const [timeLeft, setTimeLeft] = useState(0) // 타이머 시간 (초)
+  const [verificationSent, setVerificationSent] = useState(false)
+  const [verificationCode, setVerificationCode] = useState('')
+  const [sentCode, setSentCode] = useState('')
+  const [isVerified, setIsVerified] = useState(false)
+  const [sendingCode, setSendingCode] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(0) // 타이머 시간 (초)
 
-   useEffect(() => {
-     let interval: any
-     if (timeLeft > 0) {
-       interval = setInterval(() => {
-         setTimeLeft((prev) => prev - 1)
-       }, 1000)
-     } else if (timeLeft === 0 && verificationSent && !isVerified) {
-       toast.error('인증 시간이 만료되었습니다. 다시 시도해주세요.')
-       setVerificationSent(false)
-       setSentCode('')
-     }
-     return () => clearInterval(interval)
-   }, [timeLeft, verificationSent, isVerified])
+  useEffect(() => {
+    let interval: any
+    if (timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1)
+      }, 1000)
+    } else if (timeLeft === 0 && verificationSent && !isVerified) {
+      toast.error('인증 시간이 만료되었습니다. 다시 시도해주세요.')
+      setVerificationSent(false)
+      setSentCode('')
+    }
+    return () => clearInterval(interval)
+  }, [timeLeft, verificationSent, isVerified])
 
-   useEffect(() => {
-     fetchEvents().then(data => {
-       const finalEvents = data.length > 0 ? data : [
-         { id: 1, title: '모로서기', date: '2026.05.16.(SAT)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 30, occupancy: 0 },
-         { id: 2, title: '모로서기', date: '2026.05.17.(SUN)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 30, occupancy: 0 }
-       ]
-       setEvents(finalEvents)
-       
-       // Default selection to first available event
-       const firstAvailable = finalEvents.find(e => (e.occupancy || 0) < e.total_seats)
-       if (firstAvailable) {
-         setFormData(prev => ({ ...prev, event_id: firstAvailable.id.toString() }))
-       } else if (finalEvents.length > 0) {
-         setFormData(prev => ({ ...prev, event_id: finalEvents[0].id.toString() }))
-       }
-       setLoading(false)
-     })
-   }, [])
+  useEffect(() => {
+    fetchEvents().then(data => {
+      const finalEvents = data.length > 0 ? data : [
+        { id: 1, title: '모로서기', date: '2026.05.16.(SAT)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 30, occupancy: 0 },
+        { id: 2, title: '모로서기', date: '2026.05.17.(SUN)', time: '18:30', location: '서울예술대학교 중앙광장, 빨간대문', total_seats: 30, occupancy: 0 }
+      ]
+      setEvents(finalEvents)
+
+      // Default selection to first available event
+      const firstAvailable = finalEvents.find(e => (e.occupancy || 0) < e.total_seats)
+      if (firstAvailable) {
+        setFormData(prev => ({ ...prev, event_id: firstAvailable.id.toString() }))
+      } else if (finalEvents.length > 0) {
+        setFormData(prev => ({ ...prev, event_id: finalEvents[0].id.toString() }))
+      }
+      setLoading(false)
+    })
+  }, [])
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11)
@@ -146,6 +146,31 @@ export default function BookingPage() {
     }
   }
 
+  const [isBookingOpen, setIsBookingOpen] = useState(false)
+  const [countdown, setCountdown] = useState('')
+  const BOOKING_START_TIME = new Date('2026-05-03T20:00:00+09:00')
+
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date()
+      const diff = BOOKING_START_TIME.getTime() - now.getTime()
+
+      if (diff <= 0) {
+        setIsBookingOpen(true)
+      } else {
+        setIsBookingOpen(false)
+        const hours = Math.floor(diff / (1000 * 60 * 60))
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+        setCountdown(`${hours}시간 ${minutes}분 ${seconds}초`)
+      }
+    }
+
+    checkTime()
+    const timer = setInterval(checkTime, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
   if (successData) {
     return (
       <main className="page" style={{ maxWidth: '600px', margin: '0 auto' }}>
@@ -191,9 +216,9 @@ export default function BookingPage() {
     )
   }
 
-    const allFull = events.length > 0 && events.every(ev => (ev.occupancy || 0) >= ev.total_seats)
+  const allFull = events.length > 0 && events.every(ev => (ev.occupancy || 0) >= ev.total_seats)
 
-    return (
+  return (
     <main className="page" style={{ maxWidth: '900px', margin: '0 auto' }}>
       <div className="mb-8">
         <Link to="/" className="btn btn-outline">&larr; 돌아가기</Link>
@@ -208,6 +233,26 @@ export default function BookingPage() {
           <div className="text-center py-8">
             <p className="mb-4">현재 예매 가능한 공연 일정이 없습니다.</p>
             <Link to="/" className="btn btn-outline">홈으로 돌아가기</Link>
+          </div>
+        ) : !isBookingOpen ? (
+          <div className="text-center py-12" style={{ animation: 'fadeIn 0.5s ease-in-out' }}>
+            {/* <div style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>⏳</div> */}
+            <h2 className="mb-4">예매 오픈 준비 중</h2>
+            <p className="mb-8" style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
+              티켓 예매는 <strong>2026년 5월 3일 20시</strong>부터 가능합니다.
+            </p>
+            <div style={{
+              display: 'inline-block',
+              background: 'var(--purple)',
+              color: 'white',
+              padding: '1.5rem 3rem',
+              fontSize: '2rem',
+              fontWeight: 'bold',
+              border: '3px solid var(--border)',
+              boxShadow: '8px 8px 0 var(--border)'
+            }}>
+              {countdown}
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
@@ -256,10 +301,10 @@ export default function BookingPage() {
                     >
                       <div style={{ fontWeight: '700', fontSize: '1.4rem', lineHeight: '1.2' }}>{ev.date}<br />{ev.time}</div>
                       <div style={{ fontSize: '1rem', opacity: 0.9 }}>{ev.location.includes('빨간대문') ? ev.location : `${ev.location}, 빨간대문`}</div>
-                      
-                      <div style={{ 
-                        marginTop: '0.5rem', 
-                        fontSize: '0.95rem', 
+
+                      <div style={{
+                        marginTop: '0.5rem',
+                        fontSize: '0.95rem',
                         fontWeight: '600',
                         color: isFull ? 'var(--error)' : (isSelected ? 'var(--white)' : 'var(--purple)')
                       }}>
@@ -313,10 +358,10 @@ export default function BookingPage() {
               }
             `}</style>
 
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
-              gap: '4rem', 
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+              gap: '4rem',
               alignItems: 'start',
               opacity: allFull ? 0.5 : 1,
               pointerEvents: allFull ? 'none' : 'auto'
@@ -372,10 +417,10 @@ export default function BookingPage() {
                           placeholder="인증번호 6자리"
                         />
                         {timeLeft > 0 && (
-                          <span style={{ 
-                            position: 'absolute', 
-                            right: '1rem', 
-                            top: '50%', 
+                          <span style={{
+                            position: 'absolute',
+                            right: '1rem',
+                            top: '50%',
                             transform: 'translateY(-50%)',
                             color: 'var(--error)',
                             fontWeight: '600',

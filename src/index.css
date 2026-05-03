@@ -229,6 +229,21 @@ main.page {
   grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
   gap: 2.5rem;
 }
+/* Points Grid */
+.points-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 56.25rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 40rem) {
+  .points-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
 
 /* Forms */
 .form-group {
@@ -455,14 +470,31 @@ main.page {
 
 @media (max-width: 40rem) {
   .bento-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
 
   .bento-item-hero,
   .bento-item-info,
   .bento-item-actions,
-  .bento-item-small,
   .bento-item-poster {
+    grid-column: span 2;
+  }
+
+  .bento-item-small {
     grid-column: span 1;
+    padding: 1.25rem !important;
+  }
+
+  .bento-item-small h3 {
+    font-size: 1.1rem;
+  }
+
+  .navbar {
+    padding: 1.5rem 1.5rem;
+  }
+
+  main.page {
+    padding-top: 11rem;
   }
 }

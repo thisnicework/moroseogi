@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const guideData = [
   {
@@ -35,10 +35,11 @@ const guideData = [
 ]
 
 export default function NoticePage() {
+  const navigate = useNavigate()
   return (
     <main className="page">
       <div className="mb-4">
-        <Link to="/" className="btn btn-outline">&larr; 돌아가기</Link>
+        <button onClick={() => navigate(-1)} className="btn btn-outline">&larr; 돌아가기</button>
       </div>
 
       <div className="card" style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto' }}>
