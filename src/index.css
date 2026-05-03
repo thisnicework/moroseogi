@@ -41,6 +41,8 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  word-break: keep-all;
+  overflow-wrap: break-word;
   /* zoom: 0.95; */
 }
 

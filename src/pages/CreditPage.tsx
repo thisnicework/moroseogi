@@ -78,9 +78,28 @@ export default function CreditPage() {
         </div>
 
         <div className="mb-8">
-          <h3 className="mb-4 text-center">Special Thanks to</h3>
-          <div style={{ padding: '2rem', border: '2px dashed var(--purple)', textAlign: 'center' }}>
-            <p>[ 작성 예정 ]</p>
+          <h3 className="mb-6 text-center">Special Thanks to</h3>
+          <div style={{ padding: '2rem', border: '2px dashed var(--purple)', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div>
+              <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>조명</h4>
+              <p>김도현, 극장식구</p>
+            </div>
+            <div>
+              <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>무대</h4>
+              <p>씬샵</p>
+            </div>
+            <div>
+              <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>홍보영상</h4>
+              <p style={{ wordBreak: 'keep-all' }}>남예원, 이재나, 김휘진, 정효균, 이종선, 곽은샘, 채호준, 최원규, 오승민, 이동규, 정영빈, 정성운</p>
+            </div>
+            <div>
+              <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>&lt;보이기까지&gt; 음악</h4>
+              <p>백종윤</p>
+            </div>
+            <div>
+              <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.25rem', fontSize: '0.9rem' }}>&lt;In the loop&gt; 테크니션</h4>
+              <p>김서현, 안현준, 김수빈</p>
+            </div>
           </div>
         </div>
 

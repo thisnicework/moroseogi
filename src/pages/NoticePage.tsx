@@ -44,31 +44,31 @@ export default function NoticePage() {
 
       <div className="card" style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto' }}>
         <h1 className="mb-12 text-center" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>공연 관람 안내</h1>
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
           {guideData.map((section, idx) => (
             <section key={idx} style={{ animation: `fadeIn 0.5s ease-out ${idx * 0.1}s both` }}>
-              <h2 className="mb-6" style={{ 
-                fontSize: '1.5rem', 
-                color: 'var(--purple)', 
-                display: 'flex', 
+              <h2 className="mb-6" style={{
+                fontSize: '1.5rem',
+                color: 'var(--purple)',
+                display: 'flex',
                 alignItems: 'center',
                 gap: '0.75rem'
               }}>
                 <span style={{ width: '4px', height: '1.5rem', background: 'var(--purple)' }}></span>
                 {section.title}
               </h2>
-              <ul style={{ 
-                listStyle: 'none', 
-                padding: 0, 
-                display: 'flex', 
-                flexDirection: 'column', 
-                gap: '1rem' 
+              <ul style={{
+                listStyle: 'none',
+                padding: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem'
               }}>
                 {section.items.map((item, itemIdx) => (
-                  <li key={itemIdx} style={{ 
-                    fontSize: '1.05rem', 
-                    lineHeight: '1.6', 
+                  <li key={itemIdx} style={{
+                    fontSize: '1.05rem',
+                    lineHeight: '1.6',
                     color: 'var(--text)',
                     display: 'flex',
                     gap: '0.5rem',
@@ -83,15 +83,15 @@ export default function NoticePage() {
           ))}
         </div>
 
-        <div style={{ 
-          marginTop: '6rem', 
-          paddingTop: '2rem', 
-          borderTop: '1px dashed var(--border)', 
-          textAlign: 'center', 
-          color: 'var(--text-muted)', 
-          fontSize: '0.9rem' 
+        <div style={{
+          marginTop: '6rem',
+          paddingTop: '2rem',
+          borderTop: '1px dashed var(--border)',
+          textAlign: 'center',
+          color: 'var(--text-muted)',
+          fontSize: '0.9rem'
         }}>
-          <p>공연 관련 문의는 인스타그램 @moroseogi 로 부탁드립니다.</p>
+          <p>공연 관련 문의는 인스타그램 @@soeularts.moroseogi 로 부탁드립니다.</p>
         </div>
       </div>
     </main>
