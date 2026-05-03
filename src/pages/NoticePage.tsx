@@ -91,7 +91,7 @@ export default function NoticePage() {
           color: 'var(--text-muted)',
           fontSize: '0.9rem'
         }}>
-          <p>공연 관련 문의는 인스타그램 @@soeularts.moroseogi 로 부탁드립니다.</p>
+          <p>공연 관련 문의는 인스타그램 @soeularts.moroseogi 로 부탁드립니다.</p>
         </div>
       </div>
     </main>
