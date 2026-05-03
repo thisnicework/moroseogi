@@ -25,7 +25,7 @@ export default function Footer() {
         </a>
       </div>
       <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-        © 2026 모로서기. 모든 권리 보유.<br />
+        © 2026 Moroseogi. All rights reserved.<br />
         Developed by Hyunjun Ahn
       </p>
     </footer>
