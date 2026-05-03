@@ -302,14 +302,6 @@ export default function BookingPage() {
                       <div style={{ fontWeight: '700', fontSize: '1.4rem', lineHeight: '1.2' }}>{ev.date}<br />{ev.time}</div>
                       <div style={{ fontSize: '1rem', opacity: 0.9 }}>{ev.location.includes('빨간대문') ? ev.location : `${ev.location}, 빨간대문`}</div>
 
-                      <div style={{
-                        marginTop: '0.5rem',
-                        fontSize: '0.95rem',
-                        fontWeight: '600',
-                        color: isFull ? 'var(--error)' : (isSelected ? 'var(--white)' : 'var(--purple)')
-                      }}>
-                        {`남은 좌석: ${ev.total_seats - occupancy}/${ev.total_seats}`}
-                      </div>
 
                       <div style={{
                         display: 'flex',
