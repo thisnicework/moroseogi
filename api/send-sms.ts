@@ -1,3 +1,4 @@
+// SMS verification handler - Updated for redeployment
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
 
@@ -21,8 +22,7 @@ export default async function handler(
   // 2. CoolSMS 설정 (Vercel 환경 변수에서 가져옴)
   const apiKey = process.env.COOLSMS_API_KEY;
   const apiSecret = process.env.COOLSMS_API_SECRET;
-  const rawFromNumber = process.env.COOLSMS_FROM_NUMBER;
-  const fromNumber = rawFromNumber ? rawFromNumber.replace(/[^0-9]/g, '') : '';
+  const fromNumber = process.env.COOLSMS_FROM_NUMBER; // 인증된 발신 번호
 
   const missingKeys = [];
   if (!apiKey) missingKeys.push('COOLSMS_API_KEY');
@@ -39,7 +39,7 @@ export default async function handler(
   const date = new Date().toISOString();
   const salt = crypto.randomBytes(16).toString('hex');
   const signature = crypto
-    .createHmac('sha256', apiSecret!)
+    .createHmac('sha256', apiSecret)
     .update(date + salt)
     .digest('hex');
 
@@ -55,7 +55,7 @@ export default async function handler(
       },
       body: JSON.stringify({
         message: {
-          to: phone.replace(/[^0-9]/g, ''), // 수신 번호도 숫자만 남김
+          to: phone,
           from: fromNumber,
           text: `[모로서기] 인증번호 [${verificationCode}]를 입력해주세요.`,
         },
@@ -70,14 +70,12 @@ export default async function handler(
         code: verificationCode 
       });
     } else {
-      console.error('CoolSMS Error Details:', JSON.stringify(result, null, 2));
       return response.status(500).json({ 
-        error: `SMS 발송 실패: ${result.errorMessage || '알 수 없는 오류'}`, 
+        error: 'SMS 발송 실패', 
         details: result 
       });
     }
-  } catch (error: any) {
-    console.error('API Error:', error);
-    return response.status(500).json({ error: 'Internal Server Error', details: error.message });
+  } catch (error) {
+    return response.status(500).json({ error: 'Internal Server Error' });
   }
 }
