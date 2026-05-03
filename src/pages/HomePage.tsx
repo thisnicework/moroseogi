@@ -61,7 +61,7 @@ export default function HomePage() {
         </Link>
 
         <Link to="/notice" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>공지사항</h3>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>관람 안내</h3>
           <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--purple)' }}>내용 확인하기 &rarr;</span>
         </Link>
 

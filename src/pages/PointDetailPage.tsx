@@ -46,7 +46,7 @@ export default function PointDetailPage() {
         {point.viewing_points && (
           <div style={{ borderTop: '2px solid var(--purple)', paddingTop: '1.5rem', marginTop: '1.5rem' }}>
             <h4 className="mb-4">관람 포인트</h4>
-            <div style={{ fontSize: '1.1rem', lineHeight: '1.7', color: 'var(--text-muted)', wordBreak: 'keep-all' }}>
+            <div style={{ fontSize: '1.1rem', lineHeight: '1.7', color: 'var(--text-muted)', wordBreak: 'keep-all', whiteSpace: 'pre-line' }}>
               {point.viewing_points}
             </div>
           </div>

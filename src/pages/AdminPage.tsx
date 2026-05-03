@@ -182,26 +182,27 @@ export default function AdminPage() {
                         <td style={{ color: statusInfo.color, fontWeight: 'bold' }}>
                           {statusInfo.text}
                         </td>
-                      <td>
-                        {b.status !== 'cancelled' && (
-                          <button 
-                            onClick={() => b.id && handleCancel(b.id)} 
-                            className="btn"
-                            style={{ 
-                              background: 'var(--error)', 
-                              color: 'white', 
-                              border: 'none', 
-                              padding: '0.4rem 0.8rem', 
-                              fontSize: '0.85rem',
-                              boxShadow: 'none'
-                            }}
-                          >
-                            취소처리
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))
+                        <td>
+                          {!isCancelled && (
+                            <button 
+                              onClick={() => b.id && handleCancel(b.id)} 
+                              className="btn"
+                              style={{ 
+                                background: 'var(--error)', 
+                                color: 'white', 
+                                border: 'none', 
+                                padding: '0.4rem 0.8rem', 
+                                fontSize: '0.85rem',
+                                boxShadow: 'none'
+                              }}
+                            >
+                              취소처리
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    )
+                  })
                 )}
               </tbody>
             </table>
