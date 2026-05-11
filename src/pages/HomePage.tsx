@@ -70,6 +70,16 @@ export default function HomePage() {
           <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
         </Link>
 
+        <Link to="/sponsor" className="bento-card bento-item-small" style={{ padding: '1.5rem' }}>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none' }}>SPONSOR</h3>
+          <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--purple)' }}>자세히 보기 &rarr;</span>
+        </Link>
+
+        <Link to="/magazine" className="bento-card bento-item-small" style={{ padding: '1.5rem', background: 'var(--purple-dark)', color: 'var(--white)' }}>
+          <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', borderBottom: 'none', color: 'var(--bg)' }}>MAGAZINE</h3>
+          <span className="mt-auto pt-4" style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--bg)' }}>도록 보기 &rarr;</span>
+        </Link>
+
       </div>
     </main>
   )

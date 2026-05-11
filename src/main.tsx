@@ -14,6 +14,8 @@ import BookingPage from './pages/BookingPage.tsx'
 import LookupPage from './pages/LookupPage.tsx'
 import AdminPage from './pages/AdminPage.tsx'
 import NoticePage from './pages/NoticePage.tsx'
+import MagazinePage from './pages/MagazinePage.tsx'
+import SponsorPage from './pages/SponsorPage.tsx'
 
 // Browser detection for scaling
 const ua = navigator.userAgent.toLowerCase();
@@ -39,6 +41,8 @@ const router = createBrowserRouter([
       { path: 'booking', element: <BookingPage /> },
       { path: 'lookup', element: <LookupPage /> },
       { path: 'notice', element: <NoticePage /> },
+      { path: 'magazine', element: <MagazinePage /> },
+      { path: 'sponsor', element: <SponsorPage /> },
       { path: 'admin', element: <AdminPage /> },
     ],
   },
