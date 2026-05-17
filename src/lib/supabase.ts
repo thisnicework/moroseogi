@@ -13,7 +13,7 @@ const isValidUrl = (url: string) => {
 };
 
 export const supabase = createClient(
-  isValidUrl(supabaseUrl) ? supabaseUrl : 'https://placeholder.supabase.co', 
+  isValidUrl(supabaseUrl) ? supabaseUrl : 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder'
 )
 
@@ -85,7 +85,7 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'status' | 'bo
     .eq('event_id', booking.event_id)
     .not('status', 'ilike', 'cancelled%')
 
-  const totalSeats = events?.total_seats || 30
+  const totalSeats = events?.total_seats || 80
   const currentOccupancy = (currentBookings || []).reduce((sum, b) => sum + b.headcount, 0)
 
   if (currentOccupancy + booking.headcount > totalSeats) {
@@ -107,7 +107,7 @@ export async function createBooking(booking: Omit<Booking, 'id' | 'status' | 'bo
 
   // Generate a random 6-character alphanumeric booking code
   const booking_code = Math.random().toString(36).substring(2, 8).toUpperCase()
-  
+
   const { data, error } = await supabase
     .from('bookings')
     .insert([{ ...booking, booking_code, status: 'confirmed' }])
@@ -134,7 +134,7 @@ export async function lookupBooking(phone: string) {
 
 export async function cancelBooking(bookingId: number, source: 'user' | 'admin' = 'user') {
   const status = source === 'admin' ? 'cancelled_by_admin' : 'cancelled_by_user'
-  
+
   const { error } = await supabase
     .from('bookings')
     .update({ status })
