@@ -3,6 +3,21 @@ import { Link } from 'react-router-dom'
 import { fetchEvents, createBooking, type Event, type Booking } from '../lib/supabase'
 import toast from 'react-hot-toast'
 
+const isEventPassed = (eventDateStr: string) => {
+  try {
+    const matches = eventDateStr.match(/(\d{4})\.(\d{2})\.(\d{2})/)
+    if (!matches) return false
+    const [_, yyyy, mm, dd] = matches
+    const eventDate = new Date(Number(yyyy), Number(mm) - 1, Number(dd), 23, 59, 59)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    eventDate.setHours(0, 0, 0, 0)
+    return eventDate < today
+  } catch (e) {
+    return false
+  }
+}
+
 export default function BookingPage() {
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
@@ -62,12 +77,17 @@ export default function BookingPage() {
 
       setEvents(filteredEvents)
 
-      // Default selection to first available event
-      const firstAvailable = filteredEvents.find(e => (e.occupancy || 0) < e.total_seats)
+      // Default selection to first available event (not full and not passed)
+      const firstAvailable = filteredEvents.find(e => {
+        const occupancy = e.occupancy || 0
+        const isFull = occupancy >= e.total_seats
+        const isPassed = isEventPassed(e.date)
+        return !isFull && !isPassed
+      })
       if (firstAvailable) {
         setFormData(prev => ({ ...prev, event_id: firstAvailable.id.toString() }))
-      } else if (filteredEvents.length > 0) {
-        setFormData(prev => ({ ...prev, event_id: filteredEvents[0].id.toString() }))
+      } else {
+        setFormData(prev => ({ ...prev, event_id: '' }))
       }
       setLoading(false)
     })
@@ -233,6 +253,7 @@ export default function BookingPage() {
   }
 
   const allFull = events.length > 0 && events.every(ev => (ev.occupancy || 0) >= ev.total_seats)
+  const allPassed = events.length > 0 && events.every(ev => isEventPassed(ev.date))
 
   return (
     <main className="page" style={{ maxWidth: '900px', margin: '0 auto' }}>
@@ -241,7 +262,7 @@ export default function BookingPage() {
       </div>
 
       <div className="card">
-        <h1 className="mb-4" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>현장 예매</h1>
+        <h1 className="mb-4" style={{ borderBottom: '4px solid var(--purple)', paddingBottom: '1rem' }}>예매하기</h1>
         <p className="mb-12" style={{ color: 'var(--error)', fontWeight: '700', fontSize: '1.05rem' }}>
           * 본 공연은 회차별 1인 1매로 예매가 제한됩니다.
         </p>
@@ -289,6 +310,20 @@ export default function BookingPage() {
                 현재 모든 회차가 매진되었습니다. 다음에 다시 방문해주세요!
               </div>
             )}
+            {allPassed && (
+              <div style={{
+                background: 'var(--error)',
+                color: 'white',
+                padding: '1rem',
+                textAlign: 'center',
+                fontWeight: '700',
+                marginBottom: '2rem',
+                border: '3px solid var(--border)',
+                boxShadow: '4px 4px 0 var(--border)'
+              }}>
+                모든 공연의 예매 기간이 종료되었습니다.
+              </div>
+            )}
             <section style={{ marginBottom: '5rem' }}>
               <h2 className="mb-10" style={{ fontSize: '1.4rem', color: 'var(--purple-dark)' }}>1. 공연 일정을 선택해주세요</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
@@ -296,19 +331,21 @@ export default function BookingPage() {
                   const isSelected = formData.event_id === ev.id.toString()
                   const occupancy = ev.occupancy || 0
                   const isFull = occupancy >= ev.total_seats
+                  const isPassed = isEventPassed(ev.date)
+                  const isDisabled = isFull || isPassed
 
                   return (
                     <div
                       key={ev.id}
-                      onClick={() => !isFull && setFormData({ ...formData, event_id: ev.id.toString() })}
+                      onClick={() => !isDisabled && setFormData({ ...formData, event_id: ev.id.toString() })}
                       style={{
                         padding: '2.5rem 2rem',
-                        border: `0.1875rem solid ${isFull ? 'var(--border)' : 'var(--border)'}`,
-                        cursor: isFull ? 'not-allowed' : 'pointer',
-                        background: (isFull) ? '#ffffff' : (isSelected ? 'var(--purple)' : '#ffffff'),
-                        color: (isFull) ? 'var(--text)' : (isSelected ? 'var(--white)' : 'var(--text)'),
-                        boxShadow: (isSelected || isFull) ? '0 0 0 transparent' : '0.5rem 0.5rem 0 var(--border)',
-                        transform: (isSelected || isFull) ? 'translate(0.25rem, 0.25rem)' : 'none',
+                        border: `0.1875rem solid ${isDisabled ? 'var(--border)' : 'var(--border)'}`,
+                        cursor: isDisabled ? 'not-allowed' : 'pointer',
+                        background: isDisabled ? '#f5f5f5' : (isSelected ? 'var(--purple)' : '#ffffff'),
+                        color: isDisabled ? 'var(--text-muted)' : (isSelected ? 'var(--white)' : 'var(--text)'),
+                        boxShadow: (isSelected || isDisabled) ? '0 0 0 transparent' : '0.5rem 0.5rem 0 var(--border)',
+                        transform: (isSelected || isDisabled) ? 'translate(0.25rem, 0.25rem)' : 'none',
                         transition: 'all 0.15s ease',
                         display: 'flex',
                         flexDirection: 'column',
@@ -332,7 +369,7 @@ export default function BookingPage() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em'
                       }}>
-                        {!isFull && (
+                        {!isDisabled && (
                           <div style={{
                             width: '1.25rem',
                             height: '1.25rem',
@@ -354,7 +391,7 @@ export default function BookingPage() {
                             )}
                           </div>
                         )}
-                        {isFull ? '매진' : isSelected ? 'SELECTED' : 'SELECT'}
+                        {isFull || isPassed ? '매진' : isSelected ? 'SELECTED' : 'SELECT'}
                       </div>
                     </div>
                   )
@@ -374,8 +411,8 @@ export default function BookingPage() {
               gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
               gap: '4rem',
               alignItems: 'start',
-              opacity: allFull ? 0.5 : 1,
-              pointerEvents: allFull ? 'none' : 'auto'
+              opacity: (allFull || allPassed) ? 0.5 : 1,
+              pointerEvents: (allFull || allPassed) ? 'none' : 'auto'
             }}>
               <section>
                 <h2 className="mb-10" style={{ fontSize: '1.4rem', color: 'var(--purple-dark)' }}>2. 예매자 정보를 입력해주세요</h2>
@@ -388,7 +425,7 @@ export default function BookingPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="성함을 입력하세요"
-                    disabled={allFull}
+                    disabled={allFull || allPassed}
                     required
                   />
                 </div>
@@ -403,15 +440,15 @@ export default function BookingPage() {
                       value={formatPhone(formData.phone)}
                       onChange={handlePhoneChange}
                       placeholder="010-0000-0000"
-                      disabled={isVerified || allFull}
+                      disabled={isVerified || allFull || allPassed}
                       required
                     />
                     <button
                       type="button"
                       className="btn btn-outline"
-                      style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: (isVerified || allFull) ? 'none' : '4px 4px 0 var(--border)' }}
+                      style={{ padding: '0 1.5rem', fontSize: '0.9rem', flexShrink: 0, whiteSpace: 'nowrap', boxShadow: (isVerified || allFull || allPassed) ? 'none' : '4px 4px 0 var(--border)' }}
                       onClick={handleSendVerification}
-                      disabled={isVerified || sendingCode || allFull}
+                      disabled={isVerified || sendingCode || allFull || allPassed}
                     >
                       {sendingCode ? '발송 중' : isVerified ? '인증됨' : '인증번호 전송'}
                     </button>
@@ -469,13 +506,17 @@ export default function BookingPage() {
                 <div style={{ fontSize: '1.1rem', lineHeight: '2' }}>
                   <div style={{ marginBottom: '1.5rem' }}>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.25rem' }}>공연</div>
-                    <div style={{ fontWeight: '600', fontSize: '1.2rem' }}>{events.find(e => e.id.toString() === formData.event_id)?.title}</div>
+                    <div style={{ fontWeight: '600', fontSize: '1.2rem' }}>{events.find(e => e.id.toString() === formData.event_id)?.title || '선택 없음'}</div>
                   </div>
                   <div style={{ marginBottom: '1.5rem' }}>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.25rem' }}>일정</div>
                     <div style={{ fontWeight: '600' }}>
-                      {events.find(e => e.id.toString() === formData.event_id)?.date}<br />
-                      {events.find(e => e.id.toString() === formData.event_id)?.time}
+                      {events.find(e => e.id.toString() === formData.event_id) ? (
+                        <>
+                          {events.find(e => e.id.toString() === formData.event_id)?.date}<br />
+                          {events.find(e => e.id.toString() === formData.event_id)?.time}
+                        </>
+                      ) : '일정을 선택해주세요'}
                     </div>
                   </div>
                   <div style={{ borderTop: '2px solid var(--border)', marginTop: '2rem', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -486,19 +527,19 @@ export default function BookingPage() {
                 <button
                   type="submit"
                   className="btn w-full mt-10"
-                  disabled={submitting || !isVerified}
+                  disabled={submitting || !isVerified || !formData.event_id}
                   style={{
-                    background: isVerified ? 'var(--purple-dark)' : '#bbb',
+                    background: (isVerified && formData.event_id) ? 'var(--purple-dark)' : '#bbb',
                     color: 'white',
                     padding: '1.2rem',
                     fontSize: '1.1rem',
-                    cursor: isVerified ? 'pointer' : 'not-allowed',
-                    boxShadow: isVerified ? '6px 6px 0 var(--border)' : 'none',
-                    transform: isVerified ? 'none' : 'translate(4px, 4px)',
+                    cursor: (isVerified && formData.event_id) ? 'pointer' : 'not-allowed',
+                    boxShadow: (isVerified && formData.event_id) ? '6px 6px 0 var(--border)' : 'none',
+                    transform: (isVerified && formData.event_id) ? 'none' : 'translate(4px, 4px)',
                     whiteSpace: 'nowrap'
                   }}
                 >
-                  {submitting ? '처리 중...' : isVerified ? '예매 확정하기' : '인증 후 확정 가능'}
+                  {submitting ? '처리 중...' : isVerified ? (formData.event_id ? '예매 확정하기' : '일정을 선택해주세요') : '인증 후 확정 가능'}
                 </button>
               </aside>
             </div>

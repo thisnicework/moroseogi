@@ -42,7 +42,7 @@ export default function HomePage() {
         <div className="bento-card bento-item-actions" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <h3 style={{ marginBottom: '0.5rem', color: 'var(--purple-dark)' }}>TICKET</h3>
           <Link to="/booking" className="btn" style={{ padding: '1.2rem 3rem', fontSize: '1.3rem', width: '100%', borderRadius: '12px' }}>
-            현장 예매하기
+            예매하기
           </Link>
           <Link to="/lookup" className="btn btn-outline" style={{ padding: '0.8rem 2rem', fontSize: '1rem', width: '100%', borderRadius: '12px' }}>
             예매 조회 및 취소
